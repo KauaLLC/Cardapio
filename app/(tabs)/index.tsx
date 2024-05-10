@@ -1,14 +1,16 @@
 import {StyleSheet, View, Text, } from "react-native"
-
-
+import TabTwoScreen from './explore';
 export default function HomeScreen() {
+
   return (
     
       <View style={styles.container}>
         <Text style={styles.text}>
           home cardapio
         </Text>
-      </View>
+        <TabTwoScreen/>
+      </View >
+      
     
   )
 
@@ -19,6 +21,6 @@ export default function HomeScreen() {
       justifyContent: 'center',
       alignItems: 'center'
     }, text: {
-      color: 'white'
+      // color: 'white'
     }
   });

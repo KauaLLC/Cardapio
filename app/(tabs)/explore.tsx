@@ -1,6 +1,7 @@
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Button, TextInput, } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { openDatabaseSync } from 'expo-sqlite';
+import { Picker } from '@react-native-picker/picker';
 
 const db = openDatabaseSync('mydb.db');
 
@@ -8,38 +9,90 @@ db.execSync(`CREATE TABLE IF NOT EXISTS categoria (IdCategoria INTEGER PRIMARY K
 
 db.execSync(`CREATE TABLE IF NOT EXISTS alimento (nome TEXT PRIMARY KEY, categoria_id INTEGER NOT NULL, FOREIGN KEY (categoria_id) REFERENCES categoria(IdCategoria));`);
 
-db.execSync(`DELETE FROM categoria;`);
-
-db.execSync(`INSERT INTO categoria (IdCategoria, NomeCategoria) VALUES (NULL, 'proteinas');`);
-db.execSync(`INSERT INTO categoria (IdCategoria, NomeCategoria) VALUES (NULL, 'carboidratos');`);
-db.execSync(`INSERT INTO categoria (IdCategoria, NomeCategoria) VALUES (NULL, 'legumes');`);
-
 interface Categoria {
   IdCategoria: number;
   NomeCategoria: string;
 }
+
+interface Alimento {
+  nome: string;
+  categoria_id: number;
+}
+
 export default function TabTwoScreen() {
   
-  const [categorias, setCategorias] = useState<string[]>([]);
+  const [categorias, setCategorias] = useState<Categoria[]>([]);
+  const [alimentos, setAlimentos] = useState<Alimento[]>([]);
+  const [nomeAlimento, setNomeAlimento] = useState<string>('');
+  const [categoriaId, setCategoriaId] = useState<number>(0);
 
   useEffect(() => {
+    atualizarCategorias();
+    atualizarAlimentos();
+  }, []);
+
+  const atualizarCategorias = () => {
     const allRows = db.getAllSync('SELECT * FROM categoria');
-    const categoriasArray: string[] = [];
+    const categoriasArray: Categoria[] = [];
     for (const row of allRows) {
       const categoria: Categoria = row as Categoria;
-      //setCategoria(categoria.NomeCategoria);
-      categoriasArray.push(categoria.NomeCategoria);
+      categoriasArray.push(categoria);
     }
     setCategorias(categoriasArray);
-  }, []);
- 
+  }
+
+  const atualizarAlimentos = () => {
+    const allRows = db.getAllSync('SELECT * FROM alimento');
+    const alimentosArray: Alimento[] = [];
+    for (const row of allRows) {
+      const alimento: Alimento = row as Alimento;
+      alimentosArray.push(alimento);
+    }
+    setAlimentos(alimentosArray);
+  }
+
+  const adicionarAlimento = () => {
+    const stmt = db.prepareSync(`INSERT INTO alimento (nome, categoria_id) VALUES (?, ?)`);
+    stmt.executeAsync([nomeAlimento, categoriaId]);
+    setNomeAlimento('');
+    setCategoriaId(0);
+    atualizarAlimentos();
+  }
+
+  const removerAlimento = (nome: string) => {
+    const stmt = db.prepareSync(`DELETE FROM alimento WHERE nome = ?`);
+    stmt.executeAsync(nome);
+    atualizarAlimentos();
+  }
+
   return (
     <View style={styles.container}>
-      {categorias.map((categoria, index) => (
-        <Text key={index} style={styles.text}>
-          {categoria}
-        </Text>
-      ))}
+      <View>
+        <TextInput
+          style={styles.input}
+          onChangeText={setNomeAlimento}
+          value={nomeAlimento}
+          placeholder="Nome do Alimento"
+        />
+        <Picker
+          selectedValue={categoriaId}
+          style={{ height: 50, width: 150 }}
+          onValueChange={(itemValue: any, itemIndex: any) => setCategoriaId(itemValue)}
+        >
+          {categorias.map((categoria, index) => (
+            <Picker.Item key={index} label={categoria.NomeCategoria} value={categoria.IdCategoria} />
+          ))}
+        </Picker>
+        <Button title="Adicionar Alimento" onPress={adicionarAlimento} />
+        {alimentos.map((alimento, index) => (
+          <View key={index} style={styles.row}>
+            <Text style={styles.text}>
+              {alimento.nome}
+            </Text>
+            <Button title="Remover" onPress={() => removerAlimento(alimento.nome)} />
+          </View>
+        ))}
+      </View>
     </View>
   );
 }
@@ -50,7 +103,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
+  input: {
+    height: 40,
+    width: 200,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 10
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10
+  },
   text:{
-    color:'white'
+    // color:'white'
   }
 })
