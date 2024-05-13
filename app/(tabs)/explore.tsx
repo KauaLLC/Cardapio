@@ -17,8 +17,8 @@ interface Categoria {
 interface Alimento {
   nome: string;
   categoria_id: number;
+  NomeCategoria: string;
 }
-
 export default function TabTwoScreen() {
   
   const [categorias, setCategorias] = useState<Categoria[]>([]);
@@ -42,12 +42,14 @@ export default function TabTwoScreen() {
   }
 
   const atualizarAlimentos = () => {
-    const allRows = db.getAllSync('SELECT * FROM alimento');
+    const allRows = db.getAllSync('SELECT alimento.nome, categoria.NomeCategoria FROM alimento JOIN categoria ON alimento.categoria_id = categoria.IdCategoria');
     const alimentosArray: Alimento[] = [];
     for (const row of allRows) {
       const alimento: Alimento = row as Alimento;
       alimentosArray.push(alimento);
+      
     }
+    // console.log("atualizou")
     setAlimentos(alimentosArray);
   }
 
@@ -57,6 +59,7 @@ export default function TabTwoScreen() {
     setNomeAlimento('');
     setCategoriaId(0);
     atualizarAlimentos();
+    // console.log("adicionou")
   }
 
   const removerAlimento = (nome: string) => {
@@ -80,14 +83,14 @@ export default function TabTwoScreen() {
           onValueChange={(itemValue: any, itemIndex: any) => setCategoriaId(itemValue)}
         >
           {categorias.map((categoria, index) => (
-            <Picker.Item key={index} label={categoria.NomeCategoria} value={categoria.IdCategoria} />
+            <Picker.Item key={index} label={`${categoria.NomeCategoria}`} value={categoria.IdCategoria} />
           ))}
         </Picker>
         <Button title="Adicionar Alimento" onPress={adicionarAlimento} />
         {alimentos.map((alimento, index) => (
           <View key={index} style={styles.row}>
             <Text style={styles.text}>
-              {alimento.nome}
+              {alimento.nome} - {alimento.NomeCategoria}
             </Text>
             <Button title="Remover" onPress={() => removerAlimento(alimento.nome)} />
           </View>
@@ -101,7 +104,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    
   },
   input: {
     height: 40,

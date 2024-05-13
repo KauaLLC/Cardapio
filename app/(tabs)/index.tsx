@@ -8,7 +8,7 @@ export default function HomeScreen() {
         <Text style={styles.text}>
           home cardapio
         </Text>
-        <TabTwoScreen/>
+        {/* <TabTwoScreen/> */}
       </View >
       
     
