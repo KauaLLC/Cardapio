@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Button, TextInput, } from 'react-native';
+import { StyleSheet, View, Text, Button, TextInput, FlatList } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { openDatabaseSync } from 'expo-sqlite';
 import { Picker } from '@react-native-picker/picker';
@@ -6,6 +6,10 @@ import { Picker } from '@react-native-picker/picker';
 const db = openDatabaseSync('mydb.db');
 
 db.execSync(`CREATE TABLE IF NOT EXISTS categoria (IdCategoria INTEGER PRIMARY KEY AUTOINCREMENT, NomeCategoria TEXT NOT NULL);`);
+
+// db.execSync(`INSERT INTO categoria (IdCategoria, NomeCategoria) VALUES (NULL, "Legume");`);
+// db.execSync(`DELETE FROM categoria WHERE IdCategoria = 4 ;`);
+
 
 db.execSync(`CREATE TABLE IF NOT EXISTS alimento (nome TEXT PRIMARY KEY, categoria_id INTEGER NOT NULL, FOREIGN KEY (categoria_id) REFERENCES categoria(IdCategoria));`);
 
@@ -80,30 +84,46 @@ export default function TabTwoScreen() {
         <Picker
           selectedValue={categoriaId}
           style={{ height: 50, width: 150 }}
-          onValueChange={(itemValue: any, itemIndex: any) => setCategoriaId(itemValue)}
+          onValueChange={(itemValue, itemIndex) => setCategoriaId(itemValue)}
         >
+           <Picker.Item style={{color:'#d2d2d2'}} label='selecione categoria' value="" enabled={false} />
           {categorias.map((categoria, index) => (
+           
             <Picker.Item key={index} label={`${categoria.NomeCategoria}`} value={categoria.IdCategoria} />
           ))}
         </Picker>
         <Button title="Adicionar Alimento" onPress={adicionarAlimento} />
-        {alimentos.map((alimento, index) => (
+        {/* {alimentos.map((alimento, index) => (
           <View key={index} style={styles.row}>
             <Text style={styles.text}>
               {alimento.nome} - {alimento.NomeCategoria}
             </Text>
             <Button title="Remover" onPress={() => removerAlimento(alimento.nome)} />
           </View>
-        ))}
+        ))} */}
+
+       
+        
       </View>
+      
+          <View style={styles.table}>
+          <Text> Proteinas</Text>
+          <Text> Carboidratos</Text>
+          <Text> Legumes</Text>
+        
+    
+          
+        </View> 
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    marginTop:60,
     flex: 1,
-    justifyContent: 'center',
+    flexDirection: 'column',
+    justifyContent: 'space-evenly',
     alignItems: 'center',
     
   },
@@ -122,5 +142,17 @@ const styles = StyleSheet.create({
   },
   text:{
     // color:'white'
+  },
+  table:{
+    backgroundColor:"#d1d1",
+    width:"90%",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop:10,
+   
+
+   
+   
   }
+
 })
