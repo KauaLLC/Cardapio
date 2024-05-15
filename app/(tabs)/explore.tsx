@@ -6,23 +6,15 @@ import { Picker } from '@react-native-picker/picker';
 const db = openDatabaseSync('mydb.db');
 
 db.execSync(`CREATE TABLE IF NOT EXISTS categoria (IdCategoria INTEGER PRIMARY KEY AUTOINCREMENT, NomeCategoria TEXT NOT NULL);`);
-
+// db.execSync(`INSERT INTO categoria (IdCategoria, NomeCategoria) VALUES (NULL, "Proteina");`);
+// db.execSync(`INSERT INTO categoria (IdCategoria, NomeCategoria) VALUES (NULL, "Carboidrato");`);
 // db.execSync(`INSERT INTO categoria (IdCategoria, NomeCategoria) VALUES (NULL, "Legume");`);
 // db.execSync(`DELETE FROM categoria WHERE IdCategoria = 4 ;`);
 
 
 db.execSync(`CREATE TABLE IF NOT EXISTS alimento (nome TEXT PRIMARY KEY, categoria_id INTEGER NOT NULL, FOREIGN KEY (categoria_id) REFERENCES categoria(IdCategoria));`);
 
-interface Categoria {
-  IdCategoria: number;
-  NomeCategoria: string;
-}
 
-interface Alimento {
-  nome: string;
-  categoria_id: number;
-  NomeCategoria: string;
-}
 export default function TabTwoScreen() {
   
   const [categorias, setCategorias] = useState<Categoria[]>([]);
@@ -71,6 +63,17 @@ export default function TabTwoScreen() {
     stmt.executeAsync(nome);
     atualizarAlimentos();
   }
+  interface Categoria {
+    IdCategoria: number;
+    NomeCategoria: string;
+  }
+  
+  interface Alimento {
+    nome: string;
+    categoria_id: number;
+    NomeCategoria: string;
+  }
+  const nomeDaCategoria = "Proteina";
 
   return (
     <View style={styles.container}>
@@ -93,23 +96,45 @@ export default function TabTwoScreen() {
           ))}
         </Picker>
         <Button title="Adicionar Alimento" onPress={adicionarAlimento} />
-        {/* {alimentos.map((alimento, index) => (
+        {alimentos.map((alimento, index) => (
           <View key={index} style={styles.row}>
             <Text style={styles.text}>
               {alimento.nome} - {alimento.NomeCategoria}
             </Text>
             <Button title="Remover" onPress={() => removerAlimento(alimento.nome)} />
           </View>
-        ))} */}
+        ))}  
 
        
         
       </View>
       
           <View style={styles.table}>
-          <Text> Proteinas</Text>
+          
+          <View>
+            <Text style={styles.filter}> Proteinas</Text>
+            <Text>
+            {/* {alimentos.map((alimento, index) => (
+          <View key={index} style={styles.row}>
+            <Text style={styles.text}>
+              {alimento.nome} - {alimento.NomeCategoria}
+            </Text>
+          </View>
+        ))}   */}
+          {alimentos.filter(alimento => alimento.NomeCategoria === nomeDaCategoria).map((alimento, index) => (
+            <View key={index} style={styles.row}>
+              <Text style={styles.text}>
+                {alimento.nome} - {alimento.NomeCategoria}
+              </Text>
+            </View>
+          ))}
+      
+            </Text>
+          </View>
           <Text> Carboidratos</Text>
           <Text> Legumes</Text>
+
+
         
     
           
@@ -117,6 +142,7 @@ export default function TabTwoScreen() {
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -138,7 +164,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 10
+    marginBottom: 10,
+
   },
   text:{
     // color:'white'
@@ -149,10 +176,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop:10,
-   
+  },filter:{
+    flexDirection: 'row',
+    flex:1,
+    
 
-   
-   
   }
 
 })
