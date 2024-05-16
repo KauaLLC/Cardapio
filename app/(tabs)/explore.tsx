@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Button, TextInput, FlatList } from 'react-native';
+import { StyleSheet, View, Text, Button, TextInput,  } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { openDatabaseSync } from 'expo-sqlite';
 import { Picker } from '@react-native-picker/picker';
@@ -6,10 +6,14 @@ import { Picker } from '@react-native-picker/picker';
 const db = openDatabaseSync('mydb.db');
 
 db.execSync(`CREATE TABLE IF NOT EXISTS categoria (IdCategoria INTEGER PRIMARY KEY AUTOINCREMENT, NomeCategoria TEXT NOT NULL);`);
+
+
 // db.execSync(`INSERT INTO categoria (IdCategoria, NomeCategoria) VALUES (NULL, "Proteina");`);
 // db.execSync(`INSERT INTO categoria (IdCategoria, NomeCategoria) VALUES (NULL, "Carboidrato");`);
 // db.execSync(`INSERT INTO categoria (IdCategoria, NomeCategoria) VALUES (NULL, "Legume");`);
-// db.execSync(`DELETE FROM categoria WHERE IdCategoria = 4 ;`);
+// db.execSync(`DELETE FROM categoria WHERE IdCategoria;`);
+// db.execSync(`DELETE FROM categoria WHERE IdCategoria = 3 ;`);
+// db.execSync(`DELETE FROM categoria WHERE IdCategoria = 2 ;`);
 
 
 db.execSync(`CREATE TABLE IF NOT EXISTS alimento (nome TEXT PRIMARY KEY, categoria_id INTEGER NOT NULL, FOREIGN KEY (categoria_id) REFERENCES categoria(IdCategoria));`);
@@ -73,7 +77,7 @@ export default function TabTwoScreen() {
     categoria_id: number;
     NomeCategoria: string;
   }
-  const nomeDaCategoria = "Proteina";
+  // const Proteina = "Proteina";
 
   return (
     <View style={styles.container}>
@@ -104,35 +108,72 @@ export default function TabTwoScreen() {
             <Button title="Remover" onPress={() => removerAlimento(alimento.nome)} />
           </View>
         ))}  
+        <Text></Text>
 
        
         
       </View>
-      
-          <View style={styles.table}>
-          
+               {/* {alimentos.map((alimento, index) => (
+                <View key={index} style={styles.row}>
+                  <Text style={styles.text}>
+                    {alimento.nome} - {alimento.NomeCategoria}
+                  </Text>
+                </View>
+              ))}   */}
+        <View style={styles.table}>
           <View>
-            <Text style={styles.filter}> Proteinas</Text>
+            <Text style={styles.titulo}>Proteinas</Text>
             <Text>
-            {/* {alimentos.map((alimento, index) => (
-          <View key={index} style={styles.row}>
-            <Text style={styles.text}>
-              {alimento.nome} - {alimento.NomeCategoria}
+         
+              
+              {alimentos.filter(alimento => alimento.NomeCategoria === 'Proteina').map((alimento, index) => (
+                <View key={index} style={styles.row}>
+                  <Text>
+                    {alimento.nome}- {alimento.NomeCategoria}
+                  </Text>
+                  
+                  
+                </View>
+              ))}
             </Text>
           </View>
-        ))}   */}
-          {alimentos.filter(alimento => alimento.NomeCategoria === nomeDaCategoria).map((alimento, index) => (
-            <View key={index} style={styles.row}>
-              <Text style={styles.text}>
-                {alimento.nome} - {alimento.NomeCategoria}
+          <View>
+            <Text style={styles.titulo}>Carboidratos</Text>
+            <Text>
+         
+              
+              {alimentos.filter(alimento => alimento.NomeCategoria === 'Carboidrato').map((alimento, index) => (
+                <View key={index} style={styles.row}>
+                  <Text>
+                    
+                    {alimento.nome} - {alimento.NomeCategoria} {"\n"} 
+                    
+
+                    
+                  </Text>
+                  
+                  
+                </View>
+              ))}
+            </Text>
+          </View>
+          <View>
+            <Text style={styles.titulo}>  Legumes</Text>
+            <View> 
+              <Text>
+                {alimentos.filter(alimento => alimento.NomeCategoria === 'Legume').map((alimento, index) => (
+                  <View key={index} style={styles.row}>
+                    <Text style={styles.column}>
+                      {alimento.nome} - {alimento.NomeCategoria}
+                    </Text>
+                  </View>
+                ))}
               </Text>
             </View>
-          ))}
-      
-            </Text>
           </View>
-          <Text> Carboidratos</Text>
-          <Text> Legumes</Text>
+          
+
+         
 
 
         
@@ -161,14 +202,12 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   row: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 10,
+    
 
-  },
-  text:{
-    // color:'white'
   },
   table:{
     backgroundColor:"#d1d1",
@@ -176,11 +215,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop:10,
-  },filter:{
-    flexDirection: 'row',
-    flex:1,
+   },
+   text:{
+    // color:'white'
+  },column:{
+    flexDirection:'column'
+    // justifyContent:"space-between"
+  },
+  // filter:{
+    // flexDirection: 'row',
+    // flex:1,},
+    titulo:{
+
+    }
     
 
-  }
+ 
 
 })
