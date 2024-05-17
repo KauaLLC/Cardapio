@@ -78,7 +78,41 @@ export default function TabTwoScreen() {
     NomeCategoria: string;
   }
   // const Proteina = "Proteina";
+  
 
+  const selecionarAlimentoAleatorio = (categoria: string) => {
+    const allRows = db.getAllSync(`SELECT * FROM alimento JOIN categoria ON alimento.categoria_id = categoria.IdCategoria WHERE categoria.NomeCategoria = ?`, categoria);
+    if (allRows.length > 0) {
+      const indexAleatorio = Math.floor(Math.random() * allRows.length);
+      const alimento: Alimento = allRows[indexAleatorio] as Alimento;
+    return alimento;
+  }
+  return null;
+}
+  
+  const mostrarAlimentoAleatorio = () => {
+    const proteina = selecionarAlimentoAleatorio('Proteina');
+    const carboidrato = selecionarAlimentoAleatorio('Carboidrato');
+    const legume = selecionarAlimentoAleatorio('Legume');
+  
+
+  }
+  
+  const [alimentoProteina, setAlimentoProteina] = useState<Alimento | null>(null);
+  const [alimentoCarboidrato, setAlimentoCarboidrato] = useState<Alimento | null>(null);
+  const [alimentoLegume, setAlimentoLegume] = useState<Alimento | null>(null);
+
+  useEffect(() => {
+    setAlimentoProteina(selecionarAlimentoAleatorio('Proteina'));
+    setAlimentoCarboidrato(selecionarAlimentoAleatorio('Carboidrato'));
+    setAlimentoLegume(selecionarAlimentoAleatorio('Legume'));
+  }, []);
+
+  const gerarSelecaoAleatoria = () => {
+    setAlimentoProteina(selecionarAlimentoAleatorio('Proteina'));
+    setAlimentoCarboidrato(selecionarAlimentoAleatorio('Carboidrato'));
+    setAlimentoLegume(selecionarAlimentoAleatorio('Legume'));
+  }
   return (
     <View style={styles.container}>
       <View>
@@ -102,14 +136,29 @@ export default function TabTwoScreen() {
         <Button title="Adicionar Alimento" onPress={adicionarAlimento} />
         {alimentos.map((alimento, index) => (
           <View key={index} style={styles.row}>
+    
             <Text style={styles.text}>
               {alimento.nome} - {alimento.NomeCategoria}
             </Text>
             <Button title="Remover" onPress={() => removerAlimento(alimento.nome)} />
           </View>
         ))}  
-        <Text></Text>
-
+        <Text>
+          
+        
+          
+        </Text>
+        <Button title="gerar" onPress={() => mostrarAlimentoAleatorio} />
+        <Button title="Gerar nova seleção" onPress={gerarSelecaoAleatoria} />
+      <Text style={styles.text}>
+        Proteina: {alimentoProteina ? alimentoProteina.nome : 'Nenhum alimento encontrado'}
+      </Text>
+      <Text style={styles.text}>
+        Carboidrato: {alimentoCarboidrato ? alimentoCarboidrato.nome : 'Nenhum alimento encontrado'}
+      </Text>
+      <Text style={styles.text}>
+        Legume: {alimentoLegume ? alimentoLegume.nome : 'Nenhum alimento encontrado'}
+      </Text>
        
         
       </View>
@@ -128,8 +177,14 @@ export default function TabTwoScreen() {
               
               {alimentos.filter(alimento => alimento.NomeCategoria === 'Proteina').map((alimento, index) => (
                 <View key={index} style={styles.row}>
-                  <Text>
-                    {alimento.nome}- {alimento.NomeCategoria}
+                  <Text style={{ 
+                      // backgroundColor: 'blue',
+                      margin:0,
+                      flex: 0.3,
+                      flexDirection: "column"
+                    }}>
+                    {alimento.nome}{"\n"} 
+                    {/* - {alimento.NomeCategoria} */}
                   </Text>
                   
                   
@@ -144,13 +199,16 @@ export default function TabTwoScreen() {
               
               {alimentos.filter(alimento => alimento.NomeCategoria === 'Carboidrato').map((alimento, index) => (
                 <View key={index} style={styles.row}>
-                  <Text>
-                    
-                    {alimento.nome} - {alimento.NomeCategoria} {"\n"} 
-                    
-
-                    
-                  </Text>
+                  
+                  <Text style={{
+                      // backgroundColor:"red", 
+                      flex: 0.3,
+                      flexDirection: "column"
+                    }}>
+                     {alimento.nome } {"\n"}
+                     
+                     {/* {alimento.NomeCategoria}  */}
+                     </Text>
                   
                   
                 </View>
@@ -163,8 +221,12 @@ export default function TabTwoScreen() {
               <Text>
                 {alimentos.filter(alimento => alimento.NomeCategoria === 'Legume').map((alimento, index) => (
                   <View key={index} style={styles.row}>
-                    <Text style={styles.column}>
-                      {alimento.nome} - {alimento.NomeCategoria}
+                    <Text style={{ 
+                      flex: 0.3,
+                      flexDirection: "column"
+                    }}>
+                      {alimento.nome}
+                      {/*  - {alimento.NomeCategoria} */}
                     </Text>
                   </View>
                 ))}
@@ -193,6 +255,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'center',
     
+    
   },
   input: {
     height: 40,
@@ -202,7 +265,7 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   row: {
-    flexDirection: 'column',
+    flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 10,
@@ -215,13 +278,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop:10,
+    padding:0,
    },
    text:{
     // color:'white'
-  },column:{
-    flexDirection:'column'
-    // justifyContent:"space-between"
-  },
+   },
+  // column:{
+  //   flexDirection:'column',
+  //   flex: 1,
+    
+  // },
   // filter:{
     // flexDirection: 'row',
     // flex:1,},
