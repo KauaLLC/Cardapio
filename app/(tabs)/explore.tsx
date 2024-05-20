@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Button, TextInput,  } from 'react-native';
+import { StyleSheet, View, Text, Button, TextInput, } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { openDatabaseSync } from 'expo-sqlite';
 import { Picker } from '@react-native-picker/picker'; 
@@ -13,23 +13,20 @@ db.execSync(`CREATE TABLE IF NOT EXISTS categoria (IdCategoria INTEGER PRIMARY K
 // db.execSync(`INSERT INTO categoria (IdCategoria, NomeCategoria) VALUES (NULL, "Proteina");`);
 // db.execSync(`INSERT INTO categoria (IdCategoria, NomeCategoria) VALUES (NULL, "Carboidrato");`);
 // db.execSync(`INSERT INTO categoria (IdCategoria, NomeCategoria) VALUES (NULL, "Legume");`);
-// db.execSync(`DELETE FROM categoria WHERE IdCategoria;`);
-// db.execSync(`DELETE FROM categoria WHERE IdCategoria = 3 ;`);
-// db.execSync(`DELETE FROM categoria WHERE IdCategoria = 2 ;`);
+// db.execSync(`DELETE FROM categoria WHERE IdCategoria = 4 ;`);
+// db.execSync(`DELETE FROM categoria WHERE IdCategoria = 5 ;`);
+// db.execSync(`DELETE FROM categoria WHERE IdCategoria = 6 ;`);
 
 
 db.execSync(`CREATE TABLE IF NOT EXISTS alimento (nome TEXT PRIMARY KEY, categoria_id INTEGER NOT NULL, FOREIGN KEY (categoria_id) REFERENCES categoria(IdCategoria));`);
 
 
 export default function TabTwoScreen() {
-
   const colorScheme = useColorScheme();
 
   const themeTextStyle = colorScheme === 'light' ? styles.lightThemeText : styles.darkThemeText;
   const themeContainerStyle = colorScheme === 'light' ? styles.lightContainer : styles.darkContainer;
   
-
-// categoria
 
 const [categorias, setCategorias] = useState<Categoria[]>([]);
 const [categoriaId, setCategoriaId] = useState<number>(0);
@@ -50,8 +47,12 @@ const [categoriaId, setCategoriaId] = useState<number>(0);
  interface Categoria {
     IdCategoria: number;
     NomeCategoria: string;
+  }  interface Alimento {
+    nome: string;
+    categoria_id: number;
+    NomeCategoria: string;
   }
-// alimento
+
   const [alimentos, setAlimentos] = useState<Alimento[]>([]);
   const [nomeAlimento, setNomeAlimento] = useState<string>('');
   
@@ -59,6 +60,7 @@ const [categoriaId, setCategoriaId] = useState<number>(0);
   const atualizarAlimentos = () => {
     const allRows = db.getAllSync('SELECT alimento.nome, categoria.NomeCategoria FROM alimento JOIN categoria ON alimento.categoria_id = categoria.IdCategoria');
     const alimentosArray: Alimento[] = [];
+
     for (const row of allRows) {
       const alimento: Alimento = row as Alimento;
       alimentosArray.push(alimento);
@@ -85,51 +87,6 @@ const [categoriaId, setCategoriaId] = useState<number>(0);
   }
 
 
- 
-
-  interface Alimento {
-    nome: string;
-    categoria_id: number;
-    NomeCategoria: string;
-  }
-
- 
-  const selecionarAlimentoAleatorio = (categoria: string) => {
-    const allRows = db.getAllSync(`SELECT * FROM alimento JOIN categoria ON alimento.categoria_id = categoria.IdCategoria WHERE categoria.NomeCategoria = ?`, categoria);
-    if (allRows.length > 0) {
-      const indexAleatorio = Math.floor(Math.random() * allRows.length);
-      const alimento: Alimento = allRows[indexAleatorio] as Alimento;
-    return alimento;
-  }
-  return null;
-}
-
-
-  
-
-  
-  const mostrarAlimentoAleatorio = () => {
-    const proteina = selecionarAlimentoAleatorio('Proteina');
-    const carboidrato = selecionarAlimentoAleatorio('Carboidrato');
-    const legume = selecionarAlimentoAleatorio('Legume');
-
-  }
-  
-  const [alimentoProteina, setAlimentoProteina] = useState<Alimento | null>(null);
-  const [alimentoCarboidrato, setAlimentoCarboidrato] = useState<Alimento | null>(null);
-  const [alimentoLegume, setAlimentoLegume] = useState<Alimento | null>(null);
-
-  useEffect(() => {
-    setAlimentoProteina(selecionarAlimentoAleatorio('Proteina'));
-    setAlimentoCarboidrato(selecionarAlimentoAleatorio('Carboidrato'));
-    setAlimentoLegume(selecionarAlimentoAleatorio('Legume'));
-  }, []);
-
-  const gerarSelecaoAleatoria = () => {
-    setAlimentoProteina(selecionarAlimentoAleatorio('Proteina'));
-    setAlimentoCarboidrato(selecionarAlimentoAleatorio('Carboidrato'));
-    setAlimentoLegume(selecionarAlimentoAleatorio('Legume'));
-  }
   return (
     <View style={[styles.container, themeContainerStyle]}>
       <View>
