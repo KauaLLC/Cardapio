@@ -1,7 +1,9 @@
 import { StyleSheet, View, Text, Button, TextInput,  } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { openDatabaseSync } from 'expo-sqlite';
-import { Picker } from '@react-native-picker/picker';
+import { Picker } from '@react-native-picker/picker'; 
+import { Appearance, useColorScheme } from 'react-native';
+// import CrudCategoria from '@/app/CrudAlimento'
 
 const db = openDatabaseSync('mydb.db');
 
@@ -20,17 +22,22 @@ db.execSync(`CREATE TABLE IF NOT EXISTS alimento (nome TEXT PRIMARY KEY, categor
 
 
 export default function TabTwoScreen() {
+
+  const colorScheme = useColorScheme();
+
+  const themeTextStyle = colorScheme === 'light' ? styles.lightThemeText : styles.darkThemeText;
+  const themeContainerStyle = colorScheme === 'light' ? styles.lightContainer : styles.darkContainer;
   
-  const [categorias, setCategorias] = useState<Categoria[]>([]);
-  const [alimentos, setAlimentos] = useState<Alimento[]>([]);
-  const [nomeAlimento, setNomeAlimento] = useState<string>('');
-  const [categoriaId, setCategoriaId] = useState<number>(0);
+
+// categoria
+
+const [categorias, setCategorias] = useState<Categoria[]>([]);
+const [categoriaId, setCategoriaId] = useState<number>(0);
 
   useEffect(() => {
     atualizarCategorias();
     atualizarAlimentos();
   }, []);
-
   const atualizarCategorias = () => {
     const allRows = db.getAllSync('SELECT * FROM categoria');
     const categoriasArray: Categoria[] = [];
@@ -40,6 +47,14 @@ export default function TabTwoScreen() {
     }
     setCategorias(categoriasArray);
   }
+ interface Categoria {
+    IdCategoria: number;
+    NomeCategoria: string;
+  }
+// alimento
+  const [alimentos, setAlimentos] = useState<Alimento[]>([]);
+  const [nomeAlimento, setNomeAlimento] = useState<string>('');
+  
 
   const atualizarAlimentos = () => {
     const allRows = db.getAllSync('SELECT alimento.nome, categoria.NomeCategoria FROM alimento JOIN categoria ON alimento.categoria_id = categoria.IdCategoria');
@@ -53,6 +68,7 @@ export default function TabTwoScreen() {
     setAlimentos(alimentosArray);
   }
 
+
   const adicionarAlimento = () => {
     const stmt = db.prepareSync(`INSERT INTO alimento (nome, categoria_id) VALUES (?, ?)`);
     stmt.executeAsync([nomeAlimento, categoriaId]);
@@ -62,24 +78,22 @@ export default function TabTwoScreen() {
     // console.log("adicionou")
   }
 
-  const removerAlimento = (nome: string) => {
+ const removerAlimento = (nome: string) => {
     const stmt = db.prepareSync(`DELETE FROM alimento WHERE nome = ?`);
     stmt.executeAsync(nome);
     atualizarAlimentos();
   }
-  interface Categoria {
-    IdCategoria: number;
-    NomeCategoria: string;
-  }
-  
+
+
+ 
+
   interface Alimento {
     nome: string;
     categoria_id: number;
     NomeCategoria: string;
   }
-  // const Proteina = "Proteina";
-  
 
+ 
   const selecionarAlimentoAleatorio = (categoria: string) => {
     const allRows = db.getAllSync(`SELECT * FROM alimento JOIN categoria ON alimento.categoria_id = categoria.IdCategoria WHERE categoria.NomeCategoria = ?`, categoria);
     if (allRows.length > 0) {
@@ -89,12 +103,15 @@ export default function TabTwoScreen() {
   }
   return null;
 }
+
+
+  
+
   
   const mostrarAlimentoAleatorio = () => {
     const proteina = selecionarAlimentoAleatorio('Proteina');
     const carboidrato = selecionarAlimentoAleatorio('Carboidrato');
     const legume = selecionarAlimentoAleatorio('Legume');
-  
 
   }
   
@@ -114,17 +131,17 @@ export default function TabTwoScreen() {
     setAlimentoLegume(selecionarAlimentoAleatorio('Legume'));
   }
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, themeContainerStyle]}>
       <View>
         <TextInput
-          style={styles.input}
+          style={[styles.input , themeTextStyle]}
           onChangeText={setNomeAlimento}
           value={nomeAlimento}
           placeholder="Nome do Alimento"
         />
         <Picker
           selectedValue={categoriaId}
-          style={{ height: 50, width: 150 }}
+          style={ [styles.picker, themeTextStyle]}
           onValueChange={(itemValue, itemIndex) => setCategoriaId(itemValue)}
         >
            <Picker.Item style={{color:'#d2d2d2'}} label='selecione categoria' value="" enabled={false} />
@@ -137,111 +154,14 @@ export default function TabTwoScreen() {
         {alimentos.map((alimento, index) => (
           <View key={index} style={styles.row}>
     
-            <Text style={styles.text}>
+            <Text style={[styles.text, themeTextStyle]}>
               {alimento.nome} - {alimento.NomeCategoria}
             </Text>
             <Button title="Remover" onPress={() => removerAlimento(alimento.nome)} />
           </View>
         ))}  
-        <Text>
-          
-        
-          
-        </Text>
-        <Button title="gerar" onPress={() => mostrarAlimentoAleatorio} />
-        <Button title="Gerar nova seleção" onPress={gerarSelecaoAleatoria} />
-      <Text style={styles.text}>
-        Proteina: {alimentoProteina ? alimentoProteina.nome : 'Nenhum alimento encontrado'}
-      </Text>
-      <Text style={styles.text}>
-        Carboidrato: {alimentoCarboidrato ? alimentoCarboidrato.nome : 'Nenhum alimento encontrado'}
-      </Text>
-      <Text style={styles.text}>
-        Legume: {alimentoLegume ? alimentoLegume.nome : 'Nenhum alimento encontrado'}
-      </Text>
-       
-        
+  
       </View>
-               {/* {alimentos.map((alimento, index) => (
-                <View key={index} style={styles.row}>
-                  <Text style={styles.text}>
-                    {alimento.nome} - {alimento.NomeCategoria}
-                  </Text>
-                </View>
-              ))}   */}
-        <View style={styles.table}>
-          <View>
-            <Text style={styles.titulo}>Proteinas</Text>
-            <Text>
-         
-              
-              {alimentos.filter(alimento => alimento.NomeCategoria === 'Proteina').map((alimento, index) => (
-                <View key={index} style={styles.row}>
-                  <Text style={{ 
-                      // backgroundColor: 'blue',
-                      margin:0,
-                      flex: 0.3,
-                      flexDirection: "column"
-                    }}>
-                    {alimento.nome}{"\n"} 
-                    {/* - {alimento.NomeCategoria} */}
-                  </Text>
-                  
-                  
-                </View>
-              ))}
-            </Text>
-          </View>
-          <View>
-            <Text style={styles.titulo}>Carboidratos</Text>
-            <Text>
-         
-              
-              {alimentos.filter(alimento => alimento.NomeCategoria === 'Carboidrato').map((alimento, index) => (
-                <View key={index} style={styles.row}>
-                  
-                  <Text style={{
-                      // backgroundColor:"red", 
-                      flex: 0.3,
-                      flexDirection: "column"
-                    }}>
-                     {alimento.nome } {"\n"}
-                     
-                     {/* {alimento.NomeCategoria}  */}
-                     </Text>
-                  
-                  
-                </View>
-              ))}
-            </Text>
-          </View>
-          <View>
-            <Text style={styles.titulo}>  Legumes</Text>
-            <View> 
-              <Text>
-                {alimentos.filter(alimento => alimento.NomeCategoria === 'Legume').map((alimento, index) => (
-                  <View key={index} style={styles.row}>
-                    <Text style={{ 
-                      flex: 0.3,
-                      flexDirection: "column"
-                    }}>
-                      {alimento.nome}
-                      {/*  - {alimento.NomeCategoria} */}
-                    </Text>
-                  </View>
-                ))}
-              </Text>
-            </View>
-          </View>
-          
-
-         
-
-
-        
-    
-          
-        </View> 
     </View>
   );
 }
@@ -256,13 +176,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     
     
-  },
+  }, 
   input: {
     height: 40,
     width: 200,
     borderColor: 'gray',
     borderWidth: 1,
-    marginBottom: 10
+    marginBottom: 10,
+   
   },
   row: {
     flexDirection: 'row',
@@ -280,20 +201,30 @@ const styles = StyleSheet.create({
     marginTop:10,
     padding:0,
    },
-   text:{
-    // color:'white'
-   },
-  // column:{
-  //   flexDirection:'column',
-  //   flex: 1,
-    
-  // },
-  // filter:{
-    // flexDirection: 'row',
-    // flex:1,},
-    titulo:{
 
-    }
+  textContainer: {
+    flex: 1, // Ocupa espaço disponível
+    justifyContent: 'center', // Centraliza verticalmente
+  },
+  buttonContainer: {
+    flexDirection: 'row', // Alinha os botões horizontalmente
+    justifyContent: 'space-evenly', // Espaço entre os botões
+  },
+  text: {
+    fontSize: 15,
+  },
+  lightContainer: {
+    // backgroundColor: '#fff',
+  },
+  darkContainer: {
+    backgroundColor: '#000',
+  },
+  lightThemeText: {
+    color: 'black',
+  },
+  darkThemeText: {
+    color: '#fff',
+  },picker:{ height: 50, width: 150 , }
     
 
  

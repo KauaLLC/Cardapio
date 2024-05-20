@@ -32,15 +32,7 @@ export default function TabLayout() {
           ),
         }}
       />
-           {/* <Tabs.Screen
-        name="Proteina"
-        options={{
-          title: 'Proteina',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
-          ),
-        }}
-      /> */}
+     
     </Tabs>
     
   );
