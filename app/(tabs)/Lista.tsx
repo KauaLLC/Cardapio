@@ -140,23 +140,23 @@ export default function index() {
         renderItem={({ item }) => (
           <View
             style={styles.row}
-            // style={styles.item}
+          // style={styles.item}
           >
             <Text style={styles.cell}>{item.nome}</Text>
             <Text style={styles.cell}>{item.NomeCategoria}</Text>
             <Text>
-              
+
               <Button
                 color="#297B4E"
                 title="Remover"
                 onPress={() => removerAlimento(item.nome)}
               />
             </Text>
-            
+
           </View>
         )}
       />
-       <Modal
+      <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
@@ -167,9 +167,10 @@ export default function index() {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>Adicionar Alimento</Text>
 
-            <View style={styles.container2}>
+          <Text style={styles.modalText}>Adicionar Alimento</Text>
+          
+          <View style={styles.container2}>
               <TextInput
                 style={[styles.input, themeTextStyle]}
                 onChangeText={setNomeAlimento}
@@ -178,42 +179,45 @@ export default function index() {
               />
               <Picker
                 selectedValue={categoriaId}
-                style={[styles.picker, themeTextStyle]}
+                style={[styles.pickerSelecionar, themeTextStyle]}
                 onValueChange={(itemValue, itemIndex) =>
                   setCategoriaId(itemValue)
                 }
               >
                 <Picker.Item
-                  style={{ color: "#d2d2d2" }}
+                  style={{ color: "#297B4E" }}
                   label="selecione categoria"
                   value=""
                   enabled={false}
                 />
 
-               
+
                 {categorias.map((categoria, index) => (
                   <Picker.Item
                     key={index}
                     label={`${categoria.NomeCategoria}`}
                     value={categoria.IdCategoria}
                   />
-               
+
                 ))}
               </Picker>
               {/* <Button title="Adicionar Alimento" onPress={adicionarAlimento} /> */}
-              <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={adicionarAlimento}
-            >
-              <Text>Inserir Alimento</Text>
-            </Pressable>
+              <View style={styles.buttonSelecao}>
+                <Pressable
+                  style={[styles.buttonCancelar]}
+                  onPress={() => setModalVisible(!modalVisible)}
+                >
+                  <Text style={styles.textGreen}>Cancelar</Text>
+                </Pressable>
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={adicionarAlimento}
+                >
+                  <Text style={styles.TextWhite}>Adicionar</Text>
+                </Pressable>
+              </View>
             </View>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text>Cancelar</Text>
-            </Pressable>
+
           </View>
         </View>
       </Modal>
@@ -234,15 +238,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
   },
   container2: {
-    marginTop: 60,
+    marginTop: 20,
     flexDirection: "column",
-    justifyContent: "space-between",
+    // justifyContent: "space-evenly",
     alignItems: "center",
   },
   input: {
     height: 40,
     width: 200,
     borderColor: "gray",
+    backgroundColor: '#E9ECEF',
     borderWidth: 1,
     marginBottom: 10,
     textAlign: "center",
@@ -298,6 +303,7 @@ const styles = StyleSheet.create({
     marginTop: 22,
   },
   modalView: {
+    
     margin: 20,
     backgroundColor: "white",
     borderRadius: 20,
@@ -313,16 +319,34 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   button: {
-    borderRadius: 20,
+    borderRadius: 16,
     padding: 10,
     elevation: 2,
-    backgroundColor: '#297B4E'
+    backgroundColor: '#297B4E',
+    marginHorizontal: 6,
+  },
+  buttonCancelar: {
+    borderRadius: 16,
+    padding: 10,
+    elevation: 2,
+    backgroundColor: '#E9ECEF',
+    color: '#297B4E',
+    marginHorizontal: 6,
+  },
+  TextWhite: {
+    color: 'white'
+  },
+  textGreen: {
+    color: '#297B4E',
   },
   buttonOpen: {
-    backgroundColor: "#6ab7e2",
+    backgroundColor: "#297B4E",
   },
   buttonClose: {
     backgroundColor: "#297B4E",
+  },
+  buttonSelecao: {
+    flexDirection: 'row',
   },
   textStyle: {
     color: "white",
@@ -332,6 +356,8 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center",
+    fontWeight: "bold",
+  
   },
   text: {
     fontSize: 15,
@@ -349,4 +375,13 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   picker: { height: 50, width: 150 },
+  pickerSelecionar: {
+    height: 50,
+    width: 220,
+    // backgroundColor: '#E9ECEF',
+    // borderRadius:25,
+    margin:5
+    
+    
+  },
 });
