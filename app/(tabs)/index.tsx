@@ -244,7 +244,7 @@ export default function index() {
           </Text>
         </View>
         <View style={[styles.viewCard]}>
-          <Text style={[styles.textBold, styles.textCard, styles.textCenter]}>Terça</Text>
+          <Text style={[styles.textBold, styles.textCard, styles.textCenter, ]}>Terça</Text>
           <Text style={[styles.textCard, styles.textCenter]}>
           <Text style={styles.textBold}>Almoço: </Text>
             {alimentoProteina1

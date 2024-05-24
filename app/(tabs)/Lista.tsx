@@ -54,13 +54,7 @@ db.execSync(
    );`
 );
 
-// db.execSync(`delete from categoria;`);
-// db.execSync(`INSERT INTO categoria (IdCategoria, NomeCategoria) VALUES (NULL, "Proteina");`);
-// db.execSync(`INSERT INTO categoria (IdCategoria, NomeCategoria) VALUES (NULL, "Carboidrato");`);
-// db.execSync(`INSERT INTO categoria (IdCategoria, NomeCategoria) VALUES (NULL, "Legume");`);
-// db.execSync(`DELETE FROM categoria WHERE IdCategoria = 4 ;`);
-// db.execSync(`DELETE FROM categoria WHERE IdCategoria = 5 ;`);
-// db.execSync(`DELETE FROM categoria WHERE IdCategoria = 6 ;`);
+
 db.execSync(
   `CREATE TABLE IF NOT EXISTS alimento (nome TEXT PRIMARY KEY, categoria_id INTEGER NOT NULL, FOREIGN KEY (categoria_id) REFERENCES categoria(IdCategoria));`
 );
@@ -122,15 +116,39 @@ export default function index() {
     }
     setCategorias(categoriasArray);
   }
+  const [nomeAlimentoError, setNomeAlimentoError] = useState('')
+  const [errorMessage, setErrorMessage] = useState('');
+
   const adicionarAlimento = () => {
-    const stmt = db.prepareSync(
-      `INSERT INTO alimento (nome, categoria_id) VALUES (?, ?)`
-    );
-    stmt.executeAsync([nomeAlimento, categoriaId]);
-    setNomeAlimento("");
-    setCategoriaId(0);
-    atualizarAlimentos();
+    
+    let isValid = true;
+    if (!categoriaId) {
+      setErrorMessage('Por favor, selecione uma categoria.');
+      isValid = false;
+    } else {
+      setErrorMessage('');
+    }
+
+    if (!nomeAlimento) {
+      setNomeAlimentoError('Por favor, insira o nome do alimento.');
+      isValid = false;
+    } else {
+      setNomeAlimentoError('');
+    }
+
+    if (isValid) {
+      const stmt = db.prepareSync(
+        `INSERT INTO alimento (nome, categoria_id) VALUES (?, ?)`
+      );
+      stmt.executeAsync([nomeAlimento, categoriaId]);
+      setNomeAlimento("");
+      setCategoriaId(0);
+      atualizarAlimentos();
+      setModalVisible(false);
+      setModalVisible(false);
+    }
   };
+  
 
   const removerAlimento = (nome: string) => {
     const stmt = db.prepareSync(`DELETE FROM alimento WHERE nome = ?`);
@@ -202,6 +220,9 @@ export default function index() {
                 value={nomeAlimento}
                 placeholder="Nome do Alimento"
               />
+               {nomeAlimentoError ? (
+                <Text style={styles.errorText}>{nomeAlimentoError}</Text>
+              ) : null}
               <Picker
                 selectedValue={categoriaId}
                 style={[styles.pickerSelecionar, themeTextStyle]}
@@ -227,7 +248,9 @@ export default function index() {
 
                 ))}
               </Picker>
-       
+              {errorMessage ? (
+          <Text style={styles.errorText}>{errorMessage}</Text>
+        ) : null}
               <View style={styles.buttonSelecao}>
                 <Pressable
                   style={[styles.buttonCancelar]}
@@ -262,6 +285,10 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 30,
     paddingHorizontal: 30,
+  },
+  errorText:{
+    marginBottom:5,
+    color:'#DB0000'
   },
   container2: {
     marginTop: 20,
