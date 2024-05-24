@@ -26,6 +26,34 @@ const db = openDatabaseSync("mydb.db");
 db.execSync(
   `CREATE TABLE IF NOT EXISTS categoria (IdCategoria INTEGER PRIMARY KEY AUTOINCREMENT, NomeCategoria TEXT NOT NULL);`
 );
+db.execSync(
+  `INSERT INTO categoria (NomeCategoria)
+   SELECT 'Proteina'
+   WHERE NOT EXISTS (
+     SELECT 1
+     FROM categoria
+     WHERE NomeCategoria = 'Proteina'
+   );`
+);
+db.execSync(
+  `INSERT INTO categoria (NomeCategoria)
+   SELECT 'Carboidrato'
+   WHERE NOT EXISTS (
+     SELECT 1
+     FROM categoria
+     WHERE NomeCategoria = 'Carboidrato'
+   );`
+);
+db.execSync(
+  `INSERT INTO categoria (NomeCategoria)
+   SELECT 'Legume'
+   WHERE NOT EXISTS (
+     SELECT 1
+     FROM categoria
+     WHERE NomeCategoria = 'Legume'
+   );`
+);
+
 // db.execSync(`delete from categoria;`);
 // db.execSync(`INSERT INTO categoria (IdCategoria, NomeCategoria) VALUES (NULL, "Proteina");`);
 // db.execSync(`INSERT INTO categoria (IdCategoria, NomeCategoria) VALUES (NULL, "Carboidrato");`);
@@ -102,7 +130,6 @@ export default function index() {
     setNomeAlimento("");
     setCategoriaId(0);
     atualizarAlimentos();
-    // console.log("adicionou")
   };
 
   const removerAlimento = (nome: string) => {
@@ -120,9 +147,6 @@ export default function index() {
     NomeCategoria: string;
   }
 
-  //console.log("ngfdmhfdmhgmhgm");
-
-
   return (
     <View style={styles.container}>
       <View style={styles.headerTopBar}>
@@ -135,6 +159,7 @@ export default function index() {
         <Text style={styles.heading}></Text>
       </View>
       <FlatList
+      
         data={alimentos}
         keyExtractor={(item) => item.nome}
         renderItem={({ item }) => (
@@ -188,7 +213,8 @@ export default function index() {
                   style={{ color: "#297B4E" }}
                   label="selecione categoria"
                   value=""
-                  enabled={false}
+                  
+                  // enabled={false}
                 />
 
 
@@ -201,7 +227,7 @@ export default function index() {
 
                 ))}
               </Picker>
-              {/* <Button title="Adicionar Alimento" onPress={adicionarAlimento} /> */}
+       
               <View style={styles.buttonSelecao}>
                 <Pressable
                   style={[styles.buttonCancelar]}
@@ -216,7 +242,7 @@ export default function index() {
                   <Text style={styles.TextWhite}>Adicionar</Text>
                 </Pressable>
               </View>
-            </View>
+          </View>
 
           </View>
         </View>
