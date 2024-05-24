@@ -5,7 +5,7 @@ import {
   Button,
   TextInput,
   Appearance,
-  useColorScheme,
+  
   Animated,
   TouchableOpacity,
   Image,
@@ -60,12 +60,12 @@ db.execSync(
 );
 
 export default function index() {
-  const colorScheme = useColorScheme();
+  // const colorScheme = useColorScheme();
 
-  const themeTextStyle =
-    colorScheme === "light" ? styles.lightThemeText : styles.darkThemeText;
-  const themeContainerStyle =
-    colorScheme === "light" ? styles.lightContainer : styles.darkContainer;
+  // const themeTextStyle =
+  //   colorScheme === "light" ? styles.lightThemeText : styles.darkThemeText;
+  // const themeContainerStyle =
+  //   colorScheme === "light" ? styles.lightContainer : styles.darkContainer;
   const [categorias, setCategorias] = useState<Categoria[]>([]);
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -215,7 +215,7 @@ export default function index() {
           
           <View style={styles.container2}>
               <TextInput
-                style={[styles.input, themeTextStyle]}
+                style={[styles.input]}
                 onChangeText={setNomeAlimento}
                 value={nomeAlimento}
                 placeholder="Nome do Alimento"
@@ -225,7 +225,7 @@ export default function index() {
               ) : null}
               <Picker
                 selectedValue={categoriaId}
-                style={[styles.pickerSelecionar, themeTextStyle]}
+                style={[styles.pickerSelecionar]}
                 onValueChange={(itemValue, itemIndex) =>
                   setCategoriaId(itemValue)
                 }
@@ -285,6 +285,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 30,
     paddingHorizontal: 30,
+    backgroundColor:"#f7f7f8"
   },
   errorText:{
     marginBottom:5,
@@ -415,18 +416,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 15,
   },
-  lightContainer: {
-    // backgroundColor: '#fff',
-  },
-  darkContainer: {
-    backgroundColor: "#000",
-  },
-  lightThemeText: {
-    color: "black",
-  },
-  darkThemeText: {
-    color: "#fff",
-  },
+  
   picker: { height: 50, width: 150 },
   pickerSelecionar: {
     height: 50,

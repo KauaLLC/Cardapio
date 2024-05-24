@@ -5,7 +5,7 @@ import {
   Button,
   TextInput,
   Appearance,
-  useColorScheme,
+  
   Pressable,
 } from "react-native";
 import React, { useState, useEffect } from "react";
@@ -36,12 +36,12 @@ export default function index() {
     atualizarCategorias();
     atualizarAlimentos();
   }, []);
-  const colorScheme = useColorScheme();
+  // const colorScheme = useColorScheme();
 
-  const themeTextStyle =
-    colorScheme === "light" ? styles.lightThemeText : styles.darkThemeText;
-  const themeContainerStyle =
-    colorScheme === "light" ? styles.lightContainer : styles.darkContainer;
+  // const themeTextStyle =
+  //   colorScheme === "light" ? styles.lightThemeText : styles.darkThemeText;
+  // const themeContainerStyle =
+  //   colorScheme === "light" ? styles.lightContainer : styles.darkContainer;
 
   // categoria
 
@@ -203,7 +203,7 @@ export default function index() {
   return (
     <View style={[styles.container]}>
       <View style={{justifyContent: "center", width: "90%", margin: 10, alignItems: "center",}}>
-        <Text style={[styles.textTitulo, themeTextStyle]}>
+        <Text style={[styles.textTitulo]}>
           {/* Color scheme: {colorScheme} */}
           Cardápio Semanal
         </Text>
@@ -409,11 +409,14 @@ const styles = StyleSheet.create({
     marginVertical:5, 
   },
   container: {
-    margin: 30,
+    // 
+    padding: 30,
     flex: 1,
-    // justifyContent: "space-between", // Centraliza verticalmente
     alignItems: "center",
+    backgroundColor: '#f7f7f7',
+    margin:0
   },
+
   botao: {
     borderRadius: 15,
     marginTop: 30,
@@ -436,16 +439,10 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 15,
   },
-  lightContainer: {
-    // backgroundColor: '#fff',
-  },
-  darkContainer: {
-    backgroundColor: "#020202",
-  },
-  lightThemeText: {
-    color: "#0202020",
-  },
-  darkThemeText: {
-    color: "#fff",
-  },
+ 
+ 
+
+  // darkThemeText: {
+  //   color: "#fff",
+  // },
 });
