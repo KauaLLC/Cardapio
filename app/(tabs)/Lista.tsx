@@ -232,7 +232,7 @@ export default function index() {
               >
                 <Picker.Item
                   style={{ color: "#297B4E" }}
-                  label="selecione categoria"
+                  label="Selecione Categoria"
                   value=""
                   
                   // enabled={false}
@@ -418,10 +418,14 @@ const styles = StyleSheet.create({
   },
   
   picker: { height: 50, width: 150 },
+
   pickerSelecionar: {
-    height: 50,
-    width: 220,
-    // backgroundColor: '#E9ECEF',
+    height: 40,
+    width: 200,
+    backgroundColor: '#E9ECEF',
+    borderRadius:5,
+    
+    // border:"#09371D",
     // borderRadius:25,
     margin:5
     

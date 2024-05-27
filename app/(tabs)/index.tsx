@@ -4,15 +4,12 @@ import {
   Text,
   Button,
   TextInput,
-  Appearance,
-  
   Pressable,
+  SafeAreaView,
+  ScrollView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { openDatabaseSync } from "expo-sqlite";
-import { Picker } from "@react-native-picker/picker";
-
-// import CrudCategoria from '@/app/CrudAlimento'
 
 const db = openDatabaseSync("mydb.db");
 
@@ -20,12 +17,7 @@ db.execSync(
   `CREATE TABLE IF NOT EXISTS categoria (IdCategoria INTEGER PRIMARY KEY AUTOINCREMENT, NomeCategoria TEXT NOT NULL);`
 );
 
-// db.execSync(`INSERT INTO categoria (IdCategoria, NomeCategoria) VALUES (NULL, "Proteina");`);
-// db.execSync(`INSERT INTO categoria (IdCategoria, NomeCategoria) VALUES (NULL, "Carboidrato");`);
-// db.execSync(`INSERT INTO categoria (IdCategoria, NomeCategoria) VALUES (NULL, "Legume");`);
-// db.execSync(`DELETE FROM categoria WHERE IdCategoria;`);
-// db.execSync(`DELETE FROM categoria WHERE IdCategoria = 3 ;`);
-// db.execSync(`DELETE FROM categoria WHERE IdCategoria = 2 ;`);
+
 
 db.execSync(
   `CREATE TABLE IF NOT EXISTS alimento (nome TEXT PRIMARY KEY, categoria_id INTEGER NOT NULL, FOREIGN KEY (categoria_id) REFERENCES categoria(IdCategoria));`
@@ -36,14 +28,7 @@ export default function index() {
     atualizarCategorias();
     atualizarAlimentos();
   }, []);
-  // const colorScheme = useColorScheme();
 
-  // const themeTextStyle =
-  //   colorScheme === "light" ? styles.lightThemeText : styles.darkThemeText;
-  // const themeContainerStyle =
-  //   colorScheme === "light" ? styles.lightContainer : styles.darkContainer;
-
-  // categoria
 
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [categoriaId, setCategoriaId] = useState<number>(0);
@@ -169,7 +154,7 @@ export default function index() {
     setAlimentoProteina2(selecionarAlimentoAleatorio("Proteina"));
     setAlimentoCarboidrato2(selecionarAlimentoAleatorio("Carboidrato"));
     setAlimentoLegume2(selecionarAlimentoAleatorio("Legume"));
-    
+
     setAlimentoProteina3(selecionarAlimentoAleatorio("Proteina"));
     setAlimentoCarboidrato3(selecionarAlimentoAleatorio("Carboidrato"));
     setAlimentoLegume3(selecionarAlimentoAleatorio("Legume"));
@@ -201,22 +186,25 @@ export default function index() {
     setAlimentoLegume4(selecionarAlimentoAleatorio("Legume"));
   };
   return (
-    <View style={[styles.container]}>
-      <View style={{justifyContent: "center", width: "90%", margin: 10, alignItems: "center",}}>
+    <SafeAreaView style={[styles.container]}>
+
+      <View style={{ justifyContent: "center", width: "90%", margin: 10, alignItems: "center", }}>
         <Text style={[styles.textTitulo]}>
           {/* Color scheme: {colorScheme} */}
           Cardápio Semanal
         </Text>
       </View>
+      <ScrollView >
+        <View style={{ width: "100%" }}>
+          <View style={[styles.viewCard]}>
+            <Text style={[styles.textBold, styles.textCard, styles.centerDay]}>Segunda</Text>
+            <Text style={[styles.textCard, styles.textCenter]}>
+              <Text style={styles.textBold}>Almoço: </Text>
 
-      <View style={{width:"95%"}}>
-        <View style={[styles.viewCard]}>
-          <Text style={[styles.textBold, styles.textCard, styles.textCenter]}>Segunda</Text>
-          <Text style={[styles.textCard, styles.textCenter]}>
-            <Text style={styles.textBold}>Almoço: </Text>
-            
-           
-            {alimentoProteina
+              {alimentoProteina && alimentoCarboidrato && alimentoLegume
+                ? alimentoProteina.nome
+                :"Nenhum alimento encontrado"}{" "}
+              {/* {alimentoProteina
               ? alimentoProteina.nome
               : "Nenhum alimento encontrado"}
             ,{" "}
@@ -226,157 +214,162 @@ export default function index() {
             ,{" "}
             {alimentoLegume
               ? alimentoLegume.nome
-              : "Nenhum alimento encontrado"}
-          </Text>
-          <Text style={[styles.textCard, styles.textCenter]}>
-          <Text style={styles.textBold}>Janta: </Text>
-            {alimentoProteina2
-              ? alimentoProteina2.nome
-              : "Nenhum alimento encontrado"}
-            ,{" "}
-            {alimentoCarboidrato2
-              ? alimentoCarboidrato2.nome
-              : "Nenhum alimento encontrado"}
-            ,{" "}
-            {alimentoLegume2
-              ? alimentoLegume2.nome
-              : "Nenhum alimento encontrado"}
-          </Text>
+              : "Nenhum alimento encontrado"} */}
+            </Text>
+            <Text style={[styles.textCard, styles.textCenter]}>
+              <Text style={styles.textBold}>Janta: </Text>
+              {alimentoProteina2
+                ? alimentoProteina2.nome
+                : "Nenhum alimento encontrado"}
+              ,{" "}
+              {alimentoCarboidrato2
+                ? alimentoCarboidrato2.nome
+                : "Nenhum alimento encontrado"}
+              ,{" "}
+              {alimentoLegume2
+                ? alimentoLegume2.nome
+                : "Nenhum alimento encontrado"}
+            </Text>
+          </View>
+          <View style={[styles.viewCard]}>
+            <Text style={[styles.textBold, styles.textCard, styles.centerDay]}>Terça</Text>
+            <Text style={[styles.textCard, styles.textCenter]}>
+              <Text style={styles.textBold}>Almoço: </Text>
+              {alimentoProteina1
+                ? alimentoProteina1.nome
+                : "Nenhum alimento encontrado"}
+              ,{" "}
+              {alimentoCarboidrato1
+                ? alimentoCarboidrato1.nome
+                : "Nenhum alimento encontrado"}
+              ,{" "}
+              {alimentoLegume1
+                ? alimentoLegume1.nome
+                : "Nenhum alimento encontrado"}
+            </Text>
+            <Text style={[styles.textCard, styles.textCenter]}>
+              <Text style={styles.textBold}>Janta: </Text>
+              {alimentoProteina3
+                ? alimentoProteina3.nome
+                : "Nenhum alimento encontrado"}
+              ,{" "}
+              {alimentoCarboidrato3
+                ? alimentoCarboidrato3.nome
+                : "Nenhum alimento encontrado"}
+              ,{" "}
+              {alimentoLegume3
+                ? alimentoLegume3.nome
+                : "Nenhum alimento encontrado"}
+            </Text>
+          </View>
+          <View style={[styles.viewCard]}>
+            <Text style={[styles.textBold, styles.textCard, styles.centerDay]}>Quarta</Text>
+            <Text style={[styles.textCard, styles.textCenter]}>
+              <Text style={styles.textBold}>Almoço: </Text>
+              {alimentoProteina2
+                ? alimentoProteina2.nome
+                : "Nenhum alimento encontrado"}
+              ,{" "}
+              {alimentoCarboidrato2
+                ? alimentoCarboidrato2.nome
+                : "Nenhum alimento encontrado"}
+              ,{" "}
+              {alimentoLegume2
+                ? alimentoLegume2.nome
+                : "Nenhum alimento encontrado"}
+            </Text>
+            <Text style={[styles.textCard, styles.textCenter]}>
+              <Text style={styles.textBold}>Janta: </Text>
+              {alimentoProteina4
+                ? alimentoProteina4.nome
+                : "Nenhum alimento encontrado"}
+              ,{" "}
+              {alimentoCarboidrato4
+                ? alimentoCarboidrato4.nome
+                : "Nenhum alimento encontrado"}
+              ,{" "}
+              {alimentoLegume4
+                ? alimentoLegume4.nome
+                : "Nenhum alimento encontrado"}
+            </Text>
+          </View>
+          <View style={[styles.viewCard]}>
+            <Text style={[styles.textBold, styles.textCard, styles.centerDay]}>Quinta</Text>
+            <Text style={[styles.textCard, styles.textCenter]}>
+              <Text style={styles.textBold}>Almoço: </Text>
+              {alimentoProteina3
+                ? alimentoProteina3.nome
+                : "Nenhum alimento encontrado"}
+              ,{" "}
+              {alimentoCarboidrato3
+                ? alimentoCarboidrato3.nome
+                : "Nenhum alimento encontrado"}
+              ,{" "}
+              {alimentoLegume3
+                ? alimentoLegume3.nome
+                : "Nenhum alimento encontrado"}
+            </Text>
+            <Text style={[styles.textCard, styles.textCenter]}>
+              <Text style={styles.textBold}>Janta: </Text>
+              {alimentoProteina
+                ? alimentoProteina.nome
+                : "Nenhum alimento encontrado"}
+              ,{" "}
+              {alimentoCarboidrato
+                ? alimentoCarboidrato.nome
+                : "Nenhum alimento encontrado"}
+              ,{" "}
+              {alimentoLegume
+                ? alimentoLegume.nome
+                : "Nenhum alimento encontrado"}
+            </Text>
+          </View>
+          <View style={[styles.viewCard]}>
+            <Text style={[styles.textBold, styles.textCard, styles.centerDay]}>Sexta</Text>
+            <Text style={[styles.textCard, styles.textCenter]}>
+              <Text style={styles.textBold}>Almoço: </Text>
+              {alimentoProteina4
+                ? alimentoProteina4.nome
+                : "Nenhum alimento encontrado"}
+              ,{" "}
+              {alimentoCarboidrato4
+                ? alimentoCarboidrato4.nome
+                : "Nenhum alimento encontrado"}
+              ,{" "}
+              {alimentoLegume4
+                ? alimentoLegume4.nome
+                : "Nenhum alimento encontrado"}
+            </Text>
+            <Text style={[styles.textCard, styles.textCenter]}>
+              <Text style={styles.textBold}>Janta: </Text>
+              {alimentoProteina1
+                ? alimentoProteina1.nome
+                : "Nenhum alimento encontrado"}
+              ,{" "}
+              {alimentoCarboidrato1
+                ? alimentoCarboidrato1.nome
+                : "Nenhum alimento encontrado"}
+              ,{" "}
+              {alimentoLegume1
+                ? alimentoLegume1.nome
+                : "Nenhum alimento encontrado"}
+            </Text>
+          </View>
         </View>
-        <View style={[styles.viewCard]}>
-          <Text style={[styles.textBold, styles.textCard, styles.textCenter, ]}>Terça</Text>
-          <Text style={[styles.textCard, styles.textCenter]}>
-          <Text style={styles.textBold}>Almoço: </Text>
-            {alimentoProteina1
-              ? alimentoProteina1.nome
-              : "Nenhum alimento encontrado"}
-            ,{" "}
-            {alimentoCarboidrato1
-              ? alimentoCarboidrato1.nome
-              : "Nenhum alimento encontrado"}
-            ,{" "}
-            {alimentoLegume1
-              ? alimentoLegume1.nome
-              : "Nenhum alimento encontrado"}
-          </Text>
-          <Text style={[styles.textCard, styles.textCenter]}>
-          <Text style={styles.textBold}>Janta: </Text>
-            {alimentoProteina3
-              ? alimentoProteina3.nome
-              : "Nenhum alimento encontrado"}
-            ,{" "}
-            {alimentoCarboidrato3
-              ? alimentoCarboidrato3.nome
-              : "Nenhum alimento encontrado"}
-            ,{" "}
-            {alimentoLegume3
-              ? alimentoLegume3.nome
-              : "Nenhum alimento encontrado"}
-          </Text>
-        </View>
-        <View style={[styles.viewCard]}>
-          <Text style={[styles.textBold, styles.textCard, styles.textCenter]}>Quarta</Text>
-          <Text style={[styles.textCard, styles.textCenter]}>
-          <Text style={styles.textBold}>Almoço: </Text>
-            {alimentoProteina2
-              ? alimentoProteina2.nome
-              : "Nenhum alimento encontrado"}
-            ,{" "}
-            {alimentoCarboidrato2
-              ? alimentoCarboidrato2.nome
-              : "Nenhum alimento encontrado"}
-            ,{" "}
-            {alimentoLegume2
-              ? alimentoLegume2.nome
-              : "Nenhum alimento encontrado"}
-          </Text>
-          <Text style={[styles.textCard, styles.textCenter]}>
-          <Text style={styles.textBold}>Janta: </Text>
-            {alimentoProteina4
-              ? alimentoProteina4.nome
-              : "Nenhum alimento encontrado"}
-            ,{" "}
-            {alimentoCarboidrato4
-              ? alimentoCarboidrato4.nome
-              : "Nenhum alimento encontrado"}
-            ,{" "}
-            {alimentoLegume4
-              ? alimentoLegume4.nome
-              : "Nenhum alimento encontrado"}
-          </Text>
-        </View>
-        <View style={[styles.viewCard]}>
-          <Text style={[styles.textBold, styles.textCard, styles.textCenter]}>Quinta</Text>
-          <Text style={[styles.textCard, styles.textCenter]}>
-          <Text style={styles.textBold}>Almoço: </Text>
-            {alimentoProteina3
-              ? alimentoProteina3.nome
-              : "Nenhum alimento encontrado"}
-            ,{" "}
-            {alimentoCarboidrato3
-              ? alimentoCarboidrato3.nome
-              : "Nenhum alimento encontrado"}
-            ,{" "}
-            {alimentoLegume3
-              ? alimentoLegume3.nome
-              : "Nenhum alimento encontrado"}
-          </Text>
-          <Text style={[styles.textCard, styles.textCenter]}>
-          <Text style={styles.textBold}>Janta: </Text>
-            {alimentoProteina
-              ? alimentoProteina.nome
-              : "Nenhum alimento encontrado"}
-            ,{" "}
-            {alimentoCarboidrato
-              ? alimentoCarboidrato.nome
-              : "Nenhum alimento encontrado"}
-            ,{" "}
-            {alimentoLegume
-              ? alimentoLegume.nome
-              : "Nenhum alimento encontrado"}
-          </Text>
-        </View>
-        <View style={[styles.viewCard]}>
-          <Text style={[styles.textBold, styles.textCard, styles.textCenter]}>Sexta</Text>
-          <Text style={[styles.textCard, styles.textCenter]}>
-          <Text style={styles.textBold}>Almoço: </Text>
-            {alimentoProteina4
-              ? alimentoProteina4.nome
-              : "Nenhum alimento encontrado"}
-            ,{" "}
-            {alimentoCarboidrato4
-              ? alimentoCarboidrato4.nome
-              : "Nenhum alimento encontrado"}
-            ,{" "}
-            {alimentoLegume4
-              ? alimentoLegume4.nome
-              : "Nenhum alimento encontrado"}
-          </Text>
-          <Text style={[styles.textCard, styles.textCenter]}>
-          <Text style={styles.textBold}>Janta: </Text>
-            {alimentoProteina1
-              ? alimentoProteina1.nome
-              : "Nenhum alimento encontrado"}
-            ,{" "}
-            {alimentoCarboidrato1
-              ? alimentoCarboidrato1.nome
-              : "Nenhum alimento encontrado"}
-            ,{" "}
-            {alimentoLegume1
-              ? alimentoLegume1.nome
-              : "Nenhum alimento encontrado"}
-          </Text>
-        </View>
-      </View>
+      </ScrollView>
 
       <View style={styles.buttonContainer}>
         <Pressable style={styles.botao} onPress={gerarSelecaoAleatoria}>
           <Text style={styles.textBotao}>Gerar nova seleção</Text>
         </Pressable>
-        {/* <Button color={"#6ab7e2"} title="Gerar nova seleção" onPress={gerarSelecaoAleatoria} />
-        <Button color={"#6ab7e2"} title="Gerar" onPress={mostrarAlimentoAleatorio} /> */}
+        <Pressable style={styles.botao} onPress={mostrarAlimentoAleatorio}>
+          <Text style={styles.textBotao}>Gerar seleção</Text>
+        </Pressable>
+        {/* <Button color={"#6ab7e2"} title="Gerar nova seleção" onPress={gerarSelecaoAleatoria} /> */}
+        {/* <Button color={"#6ab7e2"} title="Gerar" onPress={mostrarAlimentoAleatorio} /> */}
       </View>
-    </View>
+
+    </SafeAreaView>
   );
 }
 
@@ -390,13 +383,17 @@ const styles = StyleSheet.create({
   textBold: {
     fontWeight: "bold",
   },
+  centerDay: {
+    textAlign: "center",
+  },
   textCenter: {
     textAlign: "center",
   },
   textCard: {
     color: '#F8F9FA',
     fontSize: 15,
-    
+    // textAlign:"center",
+
     // padding: 15
   },
   viewCard: {
@@ -404,17 +401,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 20,
     borderRadius: 10,
-    width: "100%",
-    height: 110,
-    marginVertical:5, 
+    minWidth: "100%",
+    height: "auto",
+    marginVertical: 5,
+
   },
   container: {
     // 
     padding: 30,
     flex: 1,
     alignItems: "center",
-    backgroundColor: '#f7f7f7',
-    margin:0
+    backgroundColor: '#f7f7f8',
+    margin: 0,
+
   },
 
   botao: {
@@ -422,7 +421,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     padding: 10,
     elevation: 2,
-    backgroundColor: "#09371D",
+    backgroundColor: "#297B4E",
   },
   textBotao: {
     color: "white",
@@ -433,16 +432,9 @@ const styles = StyleSheet.create({
     flexDirection: "row", // Alinha os botões horizontalmente
     justifyContent: "space-evenly",
     width: "100%",
-
-    // Espaço entre os botões
+    margin: 0,
   },
   text: {
     fontSize: 15,
   },
- 
- 
-
-  // darkThemeText: {
-  //   color: "#fff",
-  // },
 });
