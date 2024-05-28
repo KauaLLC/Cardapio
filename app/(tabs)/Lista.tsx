@@ -5,7 +5,7 @@ import {
   Button,
   TextInput,
   Appearance,
-  
+
   Animated,
   TouchableOpacity,
   Image,
@@ -60,28 +60,25 @@ db.execSync(
 );
 
 export default function index() {
-  // const colorScheme = useColorScheme();
 
-  // const themeTextStyle =
-  //   colorScheme === "light" ? styles.lightThemeText : styles.darkThemeText;
-  // const themeContainerStyle =
-  //   colorScheme === "light" ? styles.lightContainer : styles.darkContainer;
   const [categorias, setCategorias] = useState<Categoria[]>([]);
-
   const [modalVisible, setModalVisible] = useState(false);
   const isFocused = useIsFocused();
-
   const [categoriaId, setCategoriaId] = useState<number>(0);
+  const [nomeAlimentoError, setNomeAlimentoError] = useState('')
+  const [errorMessage, setErrorMessage] = useState(''); const [nomeAlimento, setNomeAlimento] = useState<string>("");
+  const [alimentos, setAlimentos] = useState<Alimento[]>([]);
+  // const [alimentosFiltrados, setAlimentosFiltrados] = useState<Alimento[]>([]);
+  // const [categoriaId, setCategoriaId] = useState<string>('');
+
 
   useEffect(() => {
     if (isFocused) {
-      // atualizarCategorias();
       atualizarAlimentos();
     }
   }, [isFocused]);
 
-  const [alimentos, setAlimentos] = useState<Alimento[]>([]);
-  const [nomeAlimento, setNomeAlimento] = useState<string>("");
+
 
   const atualizarAlimentos = () => {
     const allRows = db.getAllSync('SELECT alimento.nome, categoria.NomeCategoria FROM alimento JOIN categoria ON alimento.categoria_id = categoria.IdCategoria order by alimento.categoria_id');
@@ -91,7 +88,7 @@ export default function index() {
       const alimento: Alimento = row as Alimento;
       alimentosArray.push(alimento);
     }
-    // console.log("atualizou")
+
     setAlimentos(alimentosArray);
   };
   useEffect(() => {
@@ -106,6 +103,7 @@ export default function index() {
       categoriasArray.push(categoria);
     }
     setCategorias(categoriasArray);
+
   }
   const mostrarProteinas = () => {
     const allRows = db.getAllSync('SELECT * FROM categoria WHERE IdCategoria = 1');
@@ -116,11 +114,10 @@ export default function index() {
     }
     setCategorias(categoriasArray);
   }
-  const [nomeAlimentoError, setNomeAlimentoError] = useState('')
-  const [errorMessage, setErrorMessage] = useState('');
+
 
   const adicionarAlimento = () => {
-    
+
     let isValid = true;
     if (!categoriaId) {
       setErrorMessage('Por favor, selecione uma categoria.');
@@ -148,12 +145,17 @@ export default function index() {
       setModalVisible(false);
     }
   };
-  
+
+
+
+
+
 
   const removerAlimento = (nome: string) => {
     const stmt = db.prepareSync(`DELETE FROM alimento WHERE nome = ?`);
     stmt.executeAsync(nome);
     atualizarAlimentos();
+
   };
   interface Categoria {
     IdCategoria: number;
@@ -164,6 +166,12 @@ export default function index() {
     categoria_id: number;
     NomeCategoria: string;
   }
+  
+  const filterProteina = alimentos.filter(alimento => alimento.NomeCategoria  === 'Proteina');
+  const filterCarboidrato = alimentos.filter(alimento => alimento.NomeCategoria  === 'Carboidrato');
+  const filterLegume = alimentos.filter(alimento => alimento.NomeCategoria  === 'Legume');
+  
+  console.log(filterCarboidrato);
 
   return (
     <View style={styles.container}>
@@ -173,17 +181,30 @@ export default function index() {
 
       <View style={styles.header}>
         <Text style={styles.heading}>Alimento</Text>
-        <Text style={[styles.heading, styles.marginHeaderCatego]}>Categoria</Text>
-        <Text style={styles.heading}></Text>
+        <Text style={[styles.heading, styles.marginHeaderCatego]}>Categorias</Text>
+        <Text style={{ width: 30, backgroundColor: '#d2d2d2' }}>
+          <View style={{ width: 150 }}>
+            <Picker
+              selectedValue={categoriaId}
+              style={styles.pickerSelecionar}
+              onValueChange={(itemValue) => setCategoriaId(itemValue)}
+            >
+              <Picker.Item label="Selecione Categoria" value="" />
+              <Picker.Item label="Proteinas" value="Proteina" />
+              <Picker.Item label="Carboidratos" value="Carboidrato" />
+              <Picker.Item label="Legumes" value="Legume" />
+            </Picker>
+          </View>
+        </Text>
       </View>
+
       <FlatList
-      
+
         data={alimentos}
         keyExtractor={(item) => item.nome}
         renderItem={({ item }) => (
           <View
             style={styles.row}
-          // style={styles.item}
           >
             <Text style={styles.cell}>{item.nome}</Text>
             <Text style={styles.cell}>{item.NomeCategoria}</Text>
@@ -199,6 +220,7 @@ export default function index() {
           </View>
         )}
       />
+
       <Modal
         animationType="slide"
         transparent={true}
@@ -211,46 +233,48 @@ export default function index() {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
 
-          <Text style={styles.modalText}>Adicionar Alimento</Text>
-          
-          <View style={styles.container2}>
+            <Text style={styles.modalText}>Adicionar Alimento</Text>
+
+            <View style={styles.container2}>
               <TextInput
                 style={[styles.input]}
                 onChangeText={setNomeAlimento}
                 value={nomeAlimento}
                 placeholder="Nome do Alimento"
               />
-               {nomeAlimentoError ? (
+              {nomeAlimentoError ? (
                 <Text style={styles.errorText}>{nomeAlimentoError}</Text>
               ) : null}
-              <Picker
-                selectedValue={categoriaId}
-                style={[styles.pickerSelecionar]}
-                onValueChange={(itemValue, itemIndex) =>
-                  setCategoriaId(itemValue)
-                }
-              >
-                <Picker.Item
-                  style={{ color: "#297B4E" }}
-                  label="Selecione Categoria"
-                  value=""
-                  
-                  // enabled={false}
-                />
-
-
-                {categorias.map((categoria, index) => (
+              <View style={{borderColor:"gray", padding:0, borderWidth:1, marginBottom:8}}>
+                <Picker
+                  selectedValue={categoriaId}
+                  style={[styles.pickerSelecionar]}
+                  onValueChange={(itemValue, itemIndex) =>
+                    setCategoriaId(itemValue)
+                  }
+                >
                   <Picker.Item
-                    key={index}
-                    label={`${categoria.NomeCategoria}`}
-                    value={categoria.IdCategoria}
+                    style={{ color: "#297B4E" }}
+                    label="Selecione Categoria"
+                    value=""
+
+                  // enabled={false}
                   />
 
-                ))}
-              </Picker>
+
+                  {categorias.map((categoria, index) => (
+                    <Picker.Item
+                      key={index}
+                      label={`${categoria.NomeCategoria}`}
+                      value={categoria.IdCategoria}
+                    />
+
+                  ))}
+                </Picker>
+              </View>
               {errorMessage ? (
-          <Text style={styles.errorText}>{errorMessage}</Text>
-        ) : null}
+                <Text style={styles.errorText}>{errorMessage}</Text>
+              ) : null}
               <View style={styles.buttonSelecao}>
                 <Pressable
                   style={[styles.buttonCancelar]}
@@ -265,7 +289,7 @@ export default function index() {
                   <Text style={styles.TextWhite}>Adicionar</Text>
                 </Pressable>
               </View>
-          </View>
+            </View>
 
           </View>
         </View>
@@ -285,11 +309,11 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 30,
     paddingHorizontal: 30,
-    backgroundColor:"#f7f7f8"
+    backgroundColor: "#f7f7f8"
   },
-  errorText:{
-    marginBottom:5,
-    color:'#DB0000'
+  errorText: {
+    marginBottom: 5,
+    color: '#DB0000'
   },
   container2: {
     marginTop: 20,
@@ -298,7 +322,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   input: {
-    height: 40,
+    height: 50,
     width: 200,
     borderColor: "gray",
     backgroundColor: '#E9ECEF',
@@ -357,7 +381,7 @@ const styles = StyleSheet.create({
     marginTop: 22,
   },
   modalView: {
-    
+
     margin: 20,
     backgroundColor: "white",
     borderRadius: 20,
@@ -411,24 +435,21 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     textAlign: "center",
     fontWeight: "bold",
-  
+
   },
   text: {
     fontSize: 15,
   },
-  
+
   picker: { height: 50, width: 150 },
 
   pickerSelecionar: {
     height: 40,
     width: 200,
     backgroundColor: '#E9ECEF',
-    borderRadius:5,
-    
-    // border:"#09371D",
-    // borderRadius:25,
-    margin:5
-    
-    
+    borderRadius: 5,
+    margin: 0
+
+
   },
 });

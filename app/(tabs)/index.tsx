@@ -199,23 +199,13 @@ export default function index() {
           <View style={[styles.viewCard]}>
             <Text style={[styles.textBold, styles.textCard, styles.centerDay]}>Segunda</Text>
             <Text style={[styles.textCard, styles.textCenter]}>
-              <Text style={styles.textBold}>Almoço: </Text>
+                <Text style={styles.textBold}>Almoço: </Text>
 
-              {alimentoProteina && alimentoCarboidrato && alimentoLegume
-                ? alimentoProteina.nome
-                :"Nenhum alimento encontrado"}{" "}
-              {/* {alimentoProteina
-              ? alimentoProteina.nome
-              : "Nenhum alimento encontrado"}
-            ,{" "}
-            {alimentoCarboidrato
-              ? alimentoCarboidrato.nome
-              : "Nenhum alimento encontrado"}
-            ,{" "}
-            {alimentoLegume
-              ? alimentoLegume.nome
-              : "Nenhum alimento encontrado"} */}
-            </Text>
+                {alimentoProteina && alimentoCarboidrato && alimentoLegume 
+                  ? alimentoProteina.nome 
+                  :"Nenhum alimento encontrado"}{" "}
+            
+              </Text>
             <Text style={[styles.textCard, styles.textCenter]}>
               <Text style={styles.textBold}>Janta: </Text>
               {alimentoProteina2
