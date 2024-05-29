@@ -18,10 +18,9 @@ import {
 import React, { useState, useEffect } from "react";
 import { openDatabaseSync } from "expo-sqlite";
 import { Picker } from "@react-native-picker/picker";
-// import { processFontFamily } from 'expo-font';
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 
-const db = openDatabaseSync("mydb.db");
+const db = openDatabaseSync("mydb2.db");
 
 db.execSync(
   `CREATE TABLE IF NOT EXISTS categoria (IdCategoria INTEGER PRIMARY KEY AUTOINCREMENT, NomeCategoria TEXT NOT NULL);`
@@ -68,8 +67,7 @@ export default function index() {
   const [nomeAlimentoError, setNomeAlimentoError] = useState('')
   const [errorMessage, setErrorMessage] = useState(''); const [nomeAlimento, setNomeAlimento] = useState<string>("");
   const [alimentos, setAlimentos] = useState<Alimento[]>([]);
-  // const [alimentosFiltrados, setAlimentosFiltrados] = useState<Alimento[]>([]);
-  // const [categoriaId, setCategoriaId] = useState<string>('');
+  const [alimentosFiltrados, setAlimentosFiltrados] = useState<Alimento[]>([]);
 
 
   useEffect(() => {
@@ -81,7 +79,7 @@ export default function index() {
 
 
   const atualizarAlimentos = () => {
-    const allRows = db.getAllSync('SELECT alimento.nome, categoria.NomeCategoria FROM alimento JOIN categoria ON alimento.categoria_id = categoria.IdCategoria order by alimento.categoria_id');
+    const allRows = db.getAllSync('SELECT alimento.nome, categoria.NomeCategoria, categoria.IdCategoria FROM alimento JOIN categoria ON alimento.categoria_id = categoria.IdCategoria order by alimento.categoria_id');
     const alimentosArray: Alimento[] = [];
 
     for (const row of allRows) {
@@ -146,11 +144,6 @@ export default function index() {
     }
   };
 
-
-
-
-
-
   const removerAlimento = (nome: string) => {
     const stmt = db.prepareSync(`DELETE FROM alimento WHERE nome = ?`);
     stmt.executeAsync(nome);
@@ -163,44 +156,51 @@ export default function index() {
   }
   interface Alimento {
     nome: string;
-    categoria_id: number;
+    IdCategoria: number;
     NomeCategoria: string;
   }
-  
-  const filterProteina = alimentos.filter(alimento => alimento.NomeCategoria  === 'Proteina');
-  const filterCarboidrato = alimentos.filter(alimento => alimento.NomeCategoria  === 'Carboidrato');
-  const filterLegume = alimentos.filter(alimento => alimento.NomeCategoria  === 'Legume');
-  
-  console.log(filterCarboidrato);
+  const QuantAlimen = Array(alimentos.length).length
+  console.log(QuantAlimen);
+
+  const filteredAliments = categoriaId != 0 ? alimentos.filter(alimento => alimento.IdCategoria == categoriaId) : alimentos;
 
   return (
     <View style={styles.container}>
       <View style={styles.headerTopBar}>
         <Text style={styles.headerTopBarText}>Alimentos</Text>
       </View>
+      <View style={[styles.pickerFiltro]}>
+        <Picker
+          selectedValue={categoriaId}
+          onValueChange={(itemValue) =>
+            setCategoriaId(itemValue)
+          }
+        >
+          <Picker.Item
+            // style={{ color: "#297B4E" }}
+            label="Todas as categorias"
+            value="0"
 
+          />
+
+          {categorias.map((categoria, index) => (
+            <Picker.Item
+              key={index}
+              label={`${categoria.NomeCategoria}`}
+              value={categoria.IdCategoria}
+            />
+
+          ))}
+        </Picker>
+      </View>
       <View style={styles.header}>
         <Text style={styles.heading}>Alimento</Text>
         <Text style={[styles.heading, styles.marginHeaderCatego]}>Categorias</Text>
-        <Text style={{ width: 30, backgroundColor: '#d2d2d2' }}>
-          <View style={{ width: 150 }}>
-            <Picker
-              selectedValue={categoriaId}
-              style={styles.pickerSelecionar}
-              onValueChange={(itemValue) => setCategoriaId(itemValue)}
-            >
-              <Picker.Item label="Selecione Categoria" value="" />
-              <Picker.Item label="Proteinas" value="Proteina" />
-              <Picker.Item label="Carboidratos" value="Carboidrato" />
-              <Picker.Item label="Legumes" value="Legume" />
-            </Picker>
-          </View>
-        </Text>
-      </View>
-
+        <Text style={[styles.heading, styles.marginHeaderCatego]}></Text>
+        </View>
       <FlatList
 
-        data={alimentos}
+        data={filteredAliments}
         keyExtractor={(item) => item.nome}
         renderItem={({ item }) => (
           <View
@@ -245,10 +245,9 @@ export default function index() {
               {nomeAlimentoError ? (
                 <Text style={styles.errorText}>{nomeAlimentoError}</Text>
               ) : null}
-              <View style={{borderColor:"gray", padding:0, borderWidth:1, marginBottom:8}}>
+              <View style={[styles.pickerSelecionar]}>
                 <Picker
                   selectedValue={categoriaId}
-                  style={[styles.pickerSelecionar]}
                   onValueChange={(itemValue, itemIndex) =>
                     setCategoriaId(itemValue)
                   }
@@ -257,8 +256,6 @@ export default function index() {
                     style={{ color: "#297B4E" }}
                     label="Selecione Categoria"
                     value=""
-
-                  // enabled={false}
                   />
 
 
@@ -441,15 +438,32 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
 
-  picker: { height: 50, width: 150 },
 
   pickerSelecionar: {
     height: 40,
     width: 200,
     backgroundColor: '#E9ECEF',
-    borderRadius: 5,
-    margin: 0
-
-
+    margin: 0,
+    borderColor: "gray", 
+    paddingBottom: 49, 
+    borderWidth: 1, 
+    marginBottom:  10,
   },
+  pickerFiltro:{
+    backgroundColor: '#E9ECEF',
+    marginLeft:0,
+    // borderColor: "gray", 
+    // borderWidth: 1, 
+    marginBottom:  10,
+    // shadowColor: "#000",
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 2,
+    // },
+    // shadowOpacity: 0.25,
+    // shadowRadius: 4,
+    // elevation: 5,
+
+
+  }
 });

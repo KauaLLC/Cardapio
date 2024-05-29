@@ -11,7 +11,7 @@ import {
 import React, { useState, useEffect } from "react";
 import { openDatabaseSync } from "expo-sqlite";
 
-const db = openDatabaseSync("mydb.db");
+const db = openDatabaseSync("mydb2.db");
 
 db.execSync(
   `CREATE TABLE IF NOT EXISTS categoria (IdCategoria INTEGER PRIMARY KEY AUTOINCREMENT, NomeCategoria TEXT NOT NULL);`
