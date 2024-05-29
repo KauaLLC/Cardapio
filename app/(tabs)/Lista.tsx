@@ -24,7 +24,7 @@ const db = openDatabaseSync("mydb2.db");
 
 db.execSync(
   `CREATE TABLE IF NOT EXISTS categoria (IdCategoria INTEGER PRIMARY KEY AUTOINCREMENT, NomeCategoria TEXT NOT NULL);`
-);
+); 
 db.execSync(
   `INSERT INTO categoria (NomeCategoria)
    SELECT 'Proteina'
@@ -58,7 +58,7 @@ db.execSync(
   `CREATE TABLE IF NOT EXISTS alimento (nome TEXT PRIMARY KEY, categoria_id INTEGER NOT NULL, FOREIGN KEY (categoria_id) REFERENCES categoria(IdCategoria));`
 );
 
-export default function index() {
+export default function Lista() {
 
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -67,7 +67,7 @@ export default function index() {
   const [nomeAlimentoError, setNomeAlimentoError] = useState('')
   const [errorMessage, setErrorMessage] = useState(''); const [nomeAlimento, setNomeAlimento] = useState<string>("");
   const [alimentos, setAlimentos] = useState<Alimento[]>([]);
-  const [alimentosFiltrados, setAlimentosFiltrados] = useState<Alimento[]>([]);
+  // const [alimentosFiltrados, setAlimentosFiltrados] = useState<Alimento[]>([]);
 
 
   useEffect(() => {
