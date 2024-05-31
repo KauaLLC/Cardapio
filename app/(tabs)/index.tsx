@@ -11,6 +11,7 @@ import {
 import React, { useState, useEffect } from "react";
 import { openDatabaseSync } from "expo-sqlite";
 import { useIsFocused } from "@react-navigation/native";
+import { white, yellow100 } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 
 
 const db = openDatabaseSync("mydb2.db");
@@ -336,17 +337,47 @@ export default function index() {
       </View>
     )
   }
+
+  // const ButtonSelecaoHab = ()=>{
+  //   return (
+  //     <View style={styles.buttonContainer}>
+  //     <Pressable style={styles.botao} onPress={gerarSelecaoAleatoria}>
+  //       <Text style={styles.textBotao}>Gerar nova seleção</Text>
+  //     </Pressable>
+  //     <Pressable style={styles.botao} onPress={mostrarAlimentoAleatorio}>
+  //       <Text style={styles.textBotao}>Gerar seleção</Text>
+  //     </Pressable>
+  //   </View>
+  //   );
+  // }
+
+  // const ButtonSelecaoDes = ()=>{
+  //   return (
+  //     <View style={styles.buttonContainer}>
+  //     <Pressable style={styles.botaoDesabilitado} onPress={gerarSelecaoAleatoria} disabled={true}>
+  //       <Text style={styles.textBotao}>Gerar nova seleção</Text>
+  //     </Pressable>
+  //     <Pressable style={styles.botaoDesabilitado} onPress={mostrarAlimentoAleatorio} disabled={true}>
+  //       <Text style={styles.textBotao}>Gerar seleção</Text>
+  //     </Pressable>
+  //   </View>
+  //   );
+  // }
+
   const VerificaAlimentos = ()=>{
   if (QuantAlimen === 0 ) {
         return(
-          <View>
-            <Text>insira alimento</Text>
+          <View style={styles.alertListagemAlim}>
+            <Text style={[styles.textBold, styles.textColorWhite]}>Atenção</Text>
+            <Text style={styles.textColorWhite}>Insira alimentos para poder gerar listas.</Text>
           </View>
         );
 
   }else if(QuantAlimen >= 1){
     return(
+      <View>
       <ScrollCard/>
+      </View>
 );
   }
 }
@@ -364,6 +395,9 @@ export default function index() {
         <VerificaAlimentos/>
       </ScrollView>
 
+      <View>
+        {/* Botao */}
+      </View>
       <View style={styles.buttonContainer}>
         <Pressable style={styles.botao} onPress={gerarSelecaoAleatoria}>
           <Text style={styles.textBotao}>Gerar nova seleção</Text>
@@ -371,10 +405,9 @@ export default function index() {
         <Pressable style={styles.botao} onPress={mostrarAlimentoAleatorio}>
           <Text style={styles.textBotao}>Gerar seleção</Text>
         </Pressable>
-        {/* <Button color={"#6ab7e2"} title="Gerar nova seleção" onPress={gerarSelecaoAleatoria} /> */}
-        {/* <Button color={"#6ab7e2"} title="Gerar" onPress={mostrarAlimentoAleatorio} /> */}
       </View>
-
+     {/* <Button color={"#6ab7e2"} title="Gerar nova seleção" onPress={gerarSelecaoAleatoria} /> */}
+        {/* <Button color={"#6ab7e2"} title="Gerar" onPress={mostrarAlimentoAleatorio} /> */}
     </SafeAreaView>
   );
 }
@@ -430,6 +463,13 @@ const styles = StyleSheet.create({
     elevation: 2,
     backgroundColor: "#297B4E",
   },
+  botaoDesabilitado: {
+    borderRadius: 15,
+    marginTop: 30,
+    padding: 10,
+    elevation: 2,
+    backgroundColor: 'gray',
+  },
   textBotao: {
     color: "white",
     fontWeight: "bold",
@@ -444,4 +484,15 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 15,
   },
+  alertListagemAlim: {
+    backgroundColor: '#09371D',
+    padding: 14, 
+    flex: 1, 
+    justifyContent: 'center', 
+    alignItems: 'center',
+    borderRadius: 8,
+  },
+  textColorWhite: {
+    color: 'white',
+  }
 });

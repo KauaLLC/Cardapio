@@ -233,14 +233,14 @@ export default function Lista() {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
 
-            <Text style={styles.modalText}>Adicionar Alimento</Text>
+            <Text style={styles.modalText}>Adicionar alimento</Text>
 
             <View style={styles.container2}>
               <TextInput
                 style={[styles.input]}
                 onChangeText={setNomeAlimento}
                 value={nomeAlimento}
-                placeholder="Nome do Alimento"
+                placeholder="Nome do alimento"
               />
               {nomeAlimentoError ? (
                 <Text style={styles.errorText}>{nomeAlimentoError}</Text>
@@ -254,7 +254,7 @@ export default function Lista() {
                 >
                   <Picker.Item
                     style={{ color: "#297B4E" }}
-                    label="Selecione Categoria"
+                    label="Selecione categoria"
                     value=""
                   />
 
