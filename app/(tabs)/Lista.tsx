@@ -5,7 +5,6 @@ import {
   Button,
   TextInput,
   Appearance,
-
   Animated,
   TouchableOpacity,
   Image,
@@ -27,29 +26,31 @@ db.execSync(
 ); 
 db.execSync(
   `INSERT INTO categoria (NomeCategoria)
-   SELECT 'Proteina'
+   SELECT 'Proteínas'
    WHERE NOT EXISTS (
      SELECT 1
      FROM categoria
-     WHERE NomeCategoria = 'Proteina'
+     WHERE NomeCategoria = 'Proteínas'
    );`
 );
 db.execSync(
   `INSERT INTO categoria (NomeCategoria)
-   SELECT 'Carboidrato'
+   SELECT 'Carboidratos'
    WHERE NOT EXISTS (
      SELECT 1
      FROM categoria
-     WHERE NomeCategoria = 'Carboidrato'
+     WHERE NomeCategoria = 'Carboidratos'
    );`
 );
+
+// db.execAsync(`DELETE FROM categoria`)
 db.execSync(
   `INSERT INTO categoria (NomeCategoria)
-   SELECT 'Legume'
+   SELECT 'Legumes'
    WHERE NOT EXISTS (
      SELECT 1
      FROM categoria
-     WHERE NomeCategoria = 'Legume'
+     WHERE NomeCategoria = 'Legumes'
    );`
 );
 
@@ -160,14 +161,14 @@ export default function Lista() {
     NomeCategoria: string;
   }
   const QuantAlimen = Array(alimentos.length).length
-  console.log(QuantAlimen);
+  // console.log(QuantAlimen);
 
   const filteredAliments = categoriaId != 0 ? alimentos.filter(alimento => alimento.IdCategoria == categoriaId) : alimentos;
 
   return (
     <View style={styles.container}>
       <View style={styles.headerTopBar}>
-        <Text style={styles.headerTopBarText}>Alimentos</Text>
+        <Text style={styles.headerTopBarText}>Listagem de alimentos</Text>
       </View>
       <View style={[styles.pickerFiltro]}>
         <Picker
@@ -194,8 +195,8 @@ export default function Lista() {
         </Picker>
       </View>
       <View style={styles.header}>
-        <Text style={styles.heading}>Alimento</Text>
-        <Text style={[styles.heading, styles.marginHeaderCatego]}>Categorias</Text>
+        <Text style={styles.heading}>Alimentos:</Text>
+        <Text style={[styles.heading, styles.marginHeaderCatego]}>Categorias:</Text>
         <Text style={[styles.heading, styles.marginHeaderCatego]}></Text>
         </View>
       <FlatList
@@ -240,7 +241,7 @@ export default function Lista() {
                 style={[styles.input]}
                 onChangeText={setNomeAlimento}
                 value={nomeAlimento}
-                placeholder="Nome do Alimento"
+                placeholder="Nome do alimento"
               />
               {nomeAlimentoError ? (
                 <Text style={styles.errorText}>{nomeAlimentoError}</Text>
@@ -254,7 +255,7 @@ export default function Lista() {
                 >
                   <Picker.Item
                     style={{ color: "#297B4E" }}
-                    label="Selecione Categoria"
+                    label="Selecione a categoria do alimento:"
                     value=""
                   />
 
@@ -304,7 +305,7 @@ export default function Lista() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: 30,
+    paddingVertical: 15,
     paddingHorizontal: 30,
     backgroundColor: "#f7f7f8"
   },
@@ -328,17 +329,18 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   headerTopBar: {
-    backgroundColor: "#09371D",
     paddingVertical: 10,
     padding: 12,
     borderRadius: 5,
-    elevation: 2,
     marginBottom: 15,
   },
   headerTopBarText: {
-    color: "#fff",
-    fontSize: 16,
     fontWeight: "bold",
+    fontSize: 20,
+    color: '#09371D',
+    marginBottom: 0,
+    textAlign:"center"
+    
   },
   header: {
     flexDirection: "row",
@@ -394,7 +396,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   button: {
-    borderRadius: 16,
+    borderRadius: 15,
     padding: 10,
     elevation: 2,
     backgroundColor: '#297B4E',

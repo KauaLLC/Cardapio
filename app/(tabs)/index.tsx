@@ -13,17 +13,8 @@ import { openDatabaseSync } from "expo-sqlite";
 import { useIsFocused } from "@react-navigation/native";
 
 
+
 const db = openDatabaseSync("mydb2.db");
-
-db.execSync(
-  `CREATE TABLE IF NOT EXISTS categoria (IdCategoria INTEGER PRIMARY KEY AUTOINCREMENT, NomeCategoria TEXT NOT NULL);`
-);
-
-
-
-db.execSync(
-  `CREATE TABLE IF NOT EXISTS alimento (nome TEXT PRIMARY KEY, categoria_id INTEGER NOT NULL, FOREIGN KEY (categoria_id) REFERENCES categoria(IdCategoria));`
-);
 
 export default function index() {
   useEffect(() => {
@@ -57,7 +48,7 @@ export default function index() {
     setCategorias(categoriasArray);
   };
 
-  
+
   interface Categoria {
     IdCategoria: number;
     NomeCategoria: string;
@@ -67,7 +58,7 @@ export default function index() {
     IdCategoria: number;
     NomeCategoria: string;
   }
-  
+
   const atualizarAlimentos = () => {
     const allRows = db.getAllSync(
       "SELECT alimento.nome, categoria.NomeCategoria FROM alimento JOIN categoria ON alimento.categoria_id = categoria.IdCategoria"
@@ -80,8 +71,8 @@ export default function index() {
     // console.log("atualizou")
     setAlimentos(alimentosArray);
   };
-  
-  
+
+
 
 
   const selecionarAlimentoAleatorio = (categoria: string) => {
@@ -96,116 +87,194 @@ export default function index() {
     }
     return null;
   };
-
   const mostrarAlimentoAleatorio = () => {
-    const proteina = selecionarAlimentoAleatorio("Proteina");
-    const carboidrato = selecionarAlimentoAleatorio("Carboidrato");
-    const legume = selecionarAlimentoAleatorio("Legume");
+    const Proteínas = selecionarAlimentoAleatorio("Proteínas");
+    const Carboidratos = selecionarAlimentoAleatorio("Carboidratos");
+    const Legumes = selecionarAlimentoAleatorio("Legumes");
   };
 
-  const [alimentoProteina, setAlimentoProteina] = useState<Alimento | null>(
+  const [alimentoProteínas, setAlimentoProteínas] = useState<Alimento | null>(
     null
   );
-  const [alimentoCarboidrato, setAlimentoCarboidrato] =
+  const [alimentoCarboidratos, setAlimentoCarboidratos] =
     useState<Alimento | null>(null);
-  const [alimentoLegume, setAlimentoLegume] = useState<Alimento | null>(null);
-  const [alimentoProteina1, setAlimentoProteina1] = useState<Alimento | null>(
+  const [alimentoLegumes, setAlimentoLegumes] = useState<Alimento | null>(null);
+  const [alimentoProteínas1, setAlimentoProteínas1] = useState<Alimento | null>(
     null
   );
-  const [alimentoCarboidrato1, setAlimentoCarboidrato1] =
+  const [alimentoCarboidratos1, setAlimentoCarboidratos1] =
     useState<Alimento | null>(null);
-  const [alimentoLegume1, setAlimentoLegume1] = useState<Alimento | null>(null);
-  const [alimentoProteina2, setAlimentoProteina2] = useState<Alimento | null>(
+  const [alimentoLegumes1, setAlimentoLegumes1] = useState<Alimento | null>(null);
+  const [alimentoProteínas2, setAlimentoProteínas2] = useState<Alimento | null>(
     null
   );
-  const [alimentoCarboidrato2, setAlimentoCarboidrato2] =
+  const [alimentoCarboidratos2, setAlimentoCarboidratos2] =
     useState<Alimento | null>(null);
-  const [alimentoLegume2, setAlimentoLegume2] = useState<Alimento | null>(null);
+  const [alimentoLegumes2, setAlimentoLegumes2] = useState<Alimento | null>(null);
 
-  const [alimentoProteina3, setAlimentoProteina3] = useState<Alimento | null>(
+  const [alimentoProteínas3, setAlimentoProteínas3] = useState<Alimento | null>(
     null
   );
-  const [alimentoCarboidrato3, setAlimentoCarboidrato3] =
+  const [alimentoCarboidratos3, setAlimentoCarboidratos3] =
     useState<Alimento | null>(null);
-  const [alimentoLegume3, setAlimentoLegume3] = useState<Alimento | null>(null);
+  const [alimentoLegumes3, setAlimentoLegumes3] = useState<Alimento | null>(null);
 
-  const [alimentoProteina4, setAlimentoProteina4] = useState<Alimento | null>(
+  const [alimentoProteínas4, setAlimentoProteínas4] = useState<Alimento | null>(
     null
   );
-  const [alimentoCarboidrato4, setAlimentoCarboidrato4] =
+  const [alimentoCarboidratos4, setAlimentoCarboidratos4] =
     useState<Alimento | null>(null);
-  const [alimentoLegume4, setAlimentoLegume4] = useState<Alimento | null>(null);
+  const [alimentoLegumes4, setAlimentoLegumes4] = useState<Alimento | null>(null);
+  const [alimentoProteínas5, setAlimentoProteínas5] = useState<Alimento | null>(
+    null
+  );
+  const [alimentoCarboidratos5, setAlimentoCarboidratos5] =
+    useState<Alimento | null>(null);
+  const [alimentoLegumes5, setAlimentoLegumes5] = useState<Alimento | null>(null);
+  const [alimentoProteínas6, setAlimentoProteínas6] = useState<Alimento | null>(
+    null
+  );
+  const [alimentoCarboidratos6, setAlimentoCarboidratos6] =
+    useState<Alimento | null>(null);
+  const [alimentoLegumes6, setAlimentoLegumes6] = useState<Alimento | null>(null);
+  const [alimentoProteínas7, setAlimentoProteínas7] = useState<Alimento | null>(
+    null
+  );
+  const [alimentoCarboidratos7, setAlimentoCarboidratos7] =
+    useState<Alimento | null>(null);
+  const [alimentoLegumes7, setAlimentoLegumes7] = useState<Alimento | null>(null);
+  const [alimentoProteínas8, setAlimentoProteínas8] = useState<Alimento | null>(
+    null
+  );
+  const [alimentoCarboidratos8, setAlimentoCarboidratos8] =
+    useState<Alimento | null>(null);
+  const [alimentoLegumes8, setAlimentoLegumes8] = useState<Alimento | null>(null);
+  const [alimentoProteínas9, setAlimentoProteínas9] = useState<Alimento | null>(
+    null
+  );
+  const [alimentoCarboidratos9, setAlimentoCarboidratos9] =
+    useState<Alimento | null>(null);
+  const [alimentoLegumes9, setAlimentoLegumes9] = useState<Alimento | null>(null);
 
   useEffect(() => {
-    setAlimentoProteina(selecionarAlimentoAleatorio("Proteina"));
-    setAlimentoCarboidrato(selecionarAlimentoAleatorio("Carboidrato"));
-    setAlimentoLegume(selecionarAlimentoAleatorio("Legume"));
+    setAlimentoProteínas(selecionarAlimentoAleatorio("Proteínas"));
+    setAlimentoCarboidratos(selecionarAlimentoAleatorio("Carboidratos"));
+    setAlimentoLegumes(selecionarAlimentoAleatorio("Legumes"));
 
-    setAlimentoProteina1(selecionarAlimentoAleatorio("Proteina"));
-    setAlimentoCarboidrato1(selecionarAlimentoAleatorio("Carboidrato"));
-    setAlimentoLegume1(selecionarAlimentoAleatorio("Legume"));
+    setAlimentoProteínas1(selecionarAlimentoAleatorio("Proteínas"));
+    setAlimentoCarboidratos1(selecionarAlimentoAleatorio("Carboidratos"));
+    setAlimentoLegumes1(selecionarAlimentoAleatorio("Legumes"));
 
-    setAlimentoProteina2(selecionarAlimentoAleatorio("Proteina"));
-    setAlimentoCarboidrato2(selecionarAlimentoAleatorio("Carboidrato"));
-    setAlimentoLegume2(selecionarAlimentoAleatorio("Legume"));
+    setAlimentoProteínas2(selecionarAlimentoAleatorio("Proteínas"));
+    setAlimentoCarboidratos2(selecionarAlimentoAleatorio("Carboidratos"));
+    setAlimentoLegumes2(selecionarAlimentoAleatorio("Legumes"));
 
-    setAlimentoProteina3(selecionarAlimentoAleatorio("Proteina"));
-    setAlimentoCarboidrato3(selecionarAlimentoAleatorio("Carboidrato"));
-    setAlimentoLegume3(selecionarAlimentoAleatorio("Legume"));
+    setAlimentoProteínas3(selecionarAlimentoAleatorio("Proteínas"));
+    setAlimentoCarboidratos3(selecionarAlimentoAleatorio("Carboidratos"));
+    setAlimentoLegumes3(selecionarAlimentoAleatorio("Legumes"));
 
-    setAlimentoProteina4(selecionarAlimentoAleatorio("Proteina"));
-    setAlimentoCarboidrato4(selecionarAlimentoAleatorio("Carboidrato"));
-    setAlimentoLegume4(selecionarAlimentoAleatorio("Legume"));
+    setAlimentoProteínas4(selecionarAlimentoAleatorio("Proteínas"));
+    setAlimentoCarboidratos4(selecionarAlimentoAleatorio("Carboidratos"));
+    setAlimentoLegumes4(selecionarAlimentoAleatorio("Legumes"));
+
+    setAlimentoProteínas5(selecionarAlimentoAleatorio("Proteínas"));
+    setAlimentoCarboidratos5(selecionarAlimentoAleatorio("Carboidratos"));
+    setAlimentoLegumes5(selecionarAlimentoAleatorio("Legumes"));
+  
+    setAlimentoProteínas6(selecionarAlimentoAleatorio("Proteínas"));
+    setAlimentoCarboidratos6(selecionarAlimentoAleatorio("Carboidratos"));
+    setAlimentoLegumes6(selecionarAlimentoAleatorio("Legumes"));
+
+    setAlimentoProteínas7(selecionarAlimentoAleatorio("Proteínas"));
+    setAlimentoCarboidratos7(selecionarAlimentoAleatorio("Carboidratos"));
+    setAlimentoLegumes7(selecionarAlimentoAleatorio("Legumes"));
+
+    setAlimentoProteínas8(selecionarAlimentoAleatorio("Proteínas"));
+    setAlimentoCarboidratos8(selecionarAlimentoAleatorio("Carboidratos"));
+    setAlimentoLegumes8(selecionarAlimentoAleatorio("Legumes"));
+
+    setAlimentoProteínas9(selecionarAlimentoAleatorio("Proteínas"));
+    setAlimentoCarboidratos9(selecionarAlimentoAleatorio("Carboidratos"));
+    setAlimentoLegumes9(selecionarAlimentoAleatorio("Legumes"));
   }, []);
 
   const gerarSelecaoAleatoria = () => {
-    setAlimentoProteina(selecionarAlimentoAleatorio("Proteina"));
-    setAlimentoCarboidrato(selecionarAlimentoAleatorio("Carboidrato"));
-    setAlimentoLegume(selecionarAlimentoAleatorio("Legume"));
+    setAlimentoProteínas(selecionarAlimentoAleatorio("Proteínas"));
+    setAlimentoCarboidratos(selecionarAlimentoAleatorio("Carboidratos"));
+    setAlimentoLegumes(selecionarAlimentoAleatorio("Legumes"));
 
-    setAlimentoProteina1(selecionarAlimentoAleatorio("Proteina"));
-    setAlimentoCarboidrato1(selecionarAlimentoAleatorio("Carboidrato"));
-    setAlimentoLegume1(selecionarAlimentoAleatorio("Legume"));
+    setAlimentoProteínas1(selecionarAlimentoAleatorio("Proteínas"));
+    setAlimentoCarboidratos1(selecionarAlimentoAleatorio("Carboidratos"));
+    setAlimentoLegumes1(selecionarAlimentoAleatorio("Legumes"));
 
-    setAlimentoProteina2(selecionarAlimentoAleatorio("Proteina"));
-    setAlimentoCarboidrato2(selecionarAlimentoAleatorio("Carboidrato"));
-    setAlimentoLegume2(selecionarAlimentoAleatorio("Legume"));
+    setAlimentoProteínas2(selecionarAlimentoAleatorio("Proteínas"));
+    setAlimentoCarboidratos2(selecionarAlimentoAleatorio("Carboidratos"));
+    setAlimentoLegumes2(selecionarAlimentoAleatorio("Legumes"));
 
-    setAlimentoProteina3(selecionarAlimentoAleatorio("Proteina"));
-    setAlimentoCarboidrato3(selecionarAlimentoAleatorio("Carboidrato"));
-    setAlimentoLegume3(selecionarAlimentoAleatorio("Legume"));
+    setAlimentoProteínas3(selecionarAlimentoAleatorio("Proteínas"));
+    setAlimentoCarboidratos3(selecionarAlimentoAleatorio("Carboidratos"));
+    setAlimentoLegumes3(selecionarAlimentoAleatorio("Legumes"));
 
-    setAlimentoProteina4(selecionarAlimentoAleatorio("Proteina"));
-    setAlimentoCarboidrato4(selecionarAlimentoAleatorio("Carboidrato"));
-    setAlimentoLegume4(selecionarAlimentoAleatorio("Legume"));
+    setAlimentoProteínas4(selecionarAlimentoAleatorio("Proteínas"));
+    setAlimentoCarboidratos4(selecionarAlimentoAleatorio("Carboidratos"));
+    setAlimentoLegumes4(selecionarAlimentoAleatorio("Legumes"));
+
+    setAlimentoProteínas5(selecionarAlimentoAleatorio("Proteínas"));
+    setAlimentoCarboidratos5(selecionarAlimentoAleatorio("Carboidratos"));
+    setAlimentoLegumes5(selecionarAlimentoAleatorio("Legumes"));
+
+    setAlimentoProteínas6(selecionarAlimentoAleatorio("Proteínas"));
+    setAlimentoCarboidratos6(selecionarAlimentoAleatorio("Carboidratos"));
+    setAlimentoLegumes6(selecionarAlimentoAleatorio("Legumes"));
+
+    setAlimentoProteínas7(selecionarAlimentoAleatorio("Proteínas"));
+    setAlimentoCarboidratos7(selecionarAlimentoAleatorio("Carboidratos"));
+    setAlimentoLegumes7(selecionarAlimentoAleatorio("Legumes"));
+
+    setAlimentoProteínas8(selecionarAlimentoAleatorio("Proteínas"));
+    setAlimentoCarboidratos8(selecionarAlimentoAleatorio("Carboidratos"));
+    setAlimentoLegumes8(selecionarAlimentoAleatorio("Legumes"));
+
+    setAlimentoProteínas9(selecionarAlimentoAleatorio("Proteínas"));
+    setAlimentoCarboidratos9(selecionarAlimentoAleatorio("Carboidratos"));
+    setAlimentoLegumes9(selecionarAlimentoAleatorio("Legumes"));
   };
-  const QuantAlimen = Array(alimentos.length).length
-  
-  const ScrollCard = ()=>{
-    return(
-      <View style={{ width: "100%" }}>
+
+  const ScrollCard = () => {
+    return (
+      <View style={{ width: "90%", marginHorizontal: 15, justifyContent: 'center', height: "auto", padding: 0 }}>
         <View style={[styles.viewCard]}>
           <Text style={[styles.textBold, styles.textCard, styles.centerDay]}>Segunda</Text>
           <Text style={[styles.textCard, styles.textCenter]}>
             <Text style={styles.textBold}>Almoço: </Text>
 
-            {alimentoProteina && alimentoCarboidrato && alimentoLegume
-              ? alimentoProteina.nome
-              : "Nenhum alimento encontrado"}{" "}
+            {alimentoProteínas
+              ? alimentoProteínas.nome
+              : "Nenhum alimento encontrado"}
+            ,{" "}
+            {alimentoCarboidratos
+              ? alimentoCarboidratos.nome
+              : "Nenhum alimento encontrado"}
+            ,{" "}
+            {alimentoLegumes
+              ? alimentoLegumes.nome
+              : "Nenhum alimento encontrado"}
+
+
 
           </Text>
           <Text style={[styles.textCard, styles.textCenter]}>
             <Text style={styles.textBold}>Janta: </Text>
-            {alimentoProteina2
-              ? alimentoProteina2.nome
+            {alimentoProteínas5
+              ? alimentoProteínas5.nome
               : "Nenhum alimento encontrado"}
             ,{" "}
-            {alimentoCarboidrato2
-              ? alimentoCarboidrato2.nome
+            {alimentoCarboidratos5
+              ? alimentoCarboidratos5.nome
               : "Nenhum alimento encontrado"}
             ,{" "}
-            {alimentoLegume2
-              ? alimentoLegume2.nome
+            {alimentoLegumes5
+              ? alimentoLegumes5.nome
               : "Nenhum alimento encontrado"}
           </Text>
         </View>
@@ -213,30 +282,30 @@ export default function index() {
           <Text style={[styles.textBold, styles.textCard, styles.centerDay]}>Terça</Text>
           <Text style={[styles.textCard, styles.textCenter]}>
             <Text style={styles.textBold}>Almoço: </Text>
-            {alimentoProteina1
-              ? alimentoProteina1.nome
+            {alimentoProteínas1
+              ? alimentoProteínas1.nome
               : "Nenhum alimento encontrado"}
             ,{" "}
-            {alimentoCarboidrato1
-              ? alimentoCarboidrato1.nome
+            {alimentoCarboidratos1
+              ? alimentoCarboidratos1.nome
               : "Nenhum alimento encontrado"}
             ,{" "}
-            {alimentoLegume1
-              ? alimentoLegume1.nome
+            {alimentoLegumes1
+              ? alimentoLegumes1.nome
               : "Nenhum alimento encontrado"}
           </Text>
           <Text style={[styles.textCard, styles.textCenter]}>
             <Text style={styles.textBold}>Janta: </Text>
-            {alimentoProteina3
-              ? alimentoProteina3.nome
+            {alimentoProteínas6
+              ? alimentoProteínas6.nome
               : "Nenhum alimento encontrado"}
             ,{" "}
-            {alimentoCarboidrato3
-              ? alimentoCarboidrato3.nome
+            {alimentoCarboidratos6
+              ? alimentoCarboidratos6.nome
               : "Nenhum alimento encontrado"}
             ,{" "}
-            {alimentoLegume3
-              ? alimentoLegume3.nome
+            {alimentoLegumes6
+              ? alimentoLegumes6.nome
               : "Nenhum alimento encontrado"}
           </Text>
         </View>
@@ -244,30 +313,30 @@ export default function index() {
           <Text style={[styles.textBold, styles.textCard, styles.centerDay]}>Quarta</Text>
           <Text style={[styles.textCard, styles.textCenter]}>
             <Text style={styles.textBold}>Almoço: </Text>
-            {alimentoProteina2
-              ? alimentoProteina2.nome
+            {alimentoProteínas2
+              ? alimentoProteínas2.nome
               : "Nenhum alimento encontrado"}
             ,{" "}
-            {alimentoCarboidrato2
-              ? alimentoCarboidrato2.nome
+            {alimentoCarboidratos2
+              ? alimentoCarboidratos2.nome
               : "Nenhum alimento encontrado"}
             ,{" "}
-            {alimentoLegume2
-              ? alimentoLegume2.nome
+            {alimentoLegumes2
+              ? alimentoLegumes2.nome
               : "Nenhum alimento encontrado"}
           </Text>
           <Text style={[styles.textCard, styles.textCenter]}>
             <Text style={styles.textBold}>Janta: </Text>
-            {alimentoProteina4
-              ? alimentoProteina4.nome
+            {alimentoProteínas7
+              ? alimentoProteínas7.nome
               : "Nenhum alimento encontrado"}
             ,{" "}
-            {alimentoCarboidrato4
-              ? alimentoCarboidrato4.nome
+            {alimentoCarboidratos7
+              ? alimentoCarboidratos7.nome
               : "Nenhum alimento encontrado"}
             ,{" "}
-            {alimentoLegume4
-              ? alimentoLegume4.nome
+            {alimentoLegumes7
+              ? alimentoLegumes7.nome
               : "Nenhum alimento encontrado"}
           </Text>
         </View>
@@ -275,30 +344,30 @@ export default function index() {
           <Text style={[styles.textBold, styles.textCard, styles.centerDay]}>Quinta</Text>
           <Text style={[styles.textCard, styles.textCenter]}>
             <Text style={styles.textBold}>Almoço: </Text>
-            {alimentoProteina3
-              ? alimentoProteina3.nome
+            {alimentoProteínas3
+              ? alimentoProteínas3.nome
               : "Nenhum alimento encontrado"}
             ,{" "}
-            {alimentoCarboidrato3
-              ? alimentoCarboidrato3.nome
+            {alimentoCarboidratos3
+              ? alimentoCarboidratos3.nome
               : "Nenhum alimento encontrado"}
             ,{" "}
-            {alimentoLegume3
-              ? alimentoLegume3.nome
+            {alimentoLegumes3
+              ? alimentoLegumes3.nome
               : "Nenhum alimento encontrado"}
           </Text>
           <Text style={[styles.textCard, styles.textCenter]}>
             <Text style={styles.textBold}>Janta: </Text>
-            {alimentoProteina
-              ? alimentoProteina.nome
+            {alimentoProteínas8
+              ? alimentoProteínas8.nome
               : "Nenhum alimento encontrado"}
             ,{" "}
-            {alimentoCarboidrato
-              ? alimentoCarboidrato.nome
+            {alimentoCarboidratos8
+              ? alimentoCarboidratos8.nome
               : "Nenhum alimento encontrado"}
             ,{" "}
-            {alimentoLegume
-              ? alimentoLegume.nome
+            {alimentoLegumes8
+              ? alimentoLegumes8.nome
               : "Nenhum alimento encontrado"}
           </Text>
         </View>
@@ -306,50 +375,84 @@ export default function index() {
           <Text style={[styles.textBold, styles.textCard, styles.centerDay]}>Sexta</Text>
           <Text style={[styles.textCard, styles.textCenter]}>
             <Text style={styles.textBold}>Almoço: </Text>
-            {alimentoProteina4
-              ? alimentoProteina4.nome
+            {alimentoProteínas4
+              ? alimentoProteínas4.nome
               : "Nenhum alimento encontrado"}
             ,{" "}
-            {alimentoCarboidrato4
-              ? alimentoCarboidrato4.nome
+            {alimentoCarboidratos4
+              ? alimentoCarboidratos4.nome
               : "Nenhum alimento encontrado"}
             ,{" "}
-            {alimentoLegume4
-              ? alimentoLegume4.nome
+            {alimentoLegumes4
+              ? alimentoLegumes4.nome
               : "Nenhum alimento encontrado"}
           </Text>
           <Text style={[styles.textCard, styles.textCenter]}>
             <Text style={styles.textBold}>Janta: </Text>
-            {alimentoProteina1
-              ? alimentoProteina1.nome
+            {alimentoProteínas9
+              ? alimentoProteínas9.nome
               : "Nenhum alimento encontrado"}
             ,{" "}
-            {alimentoCarboidrato1
-              ? alimentoCarboidrato1.nome
+            {alimentoCarboidratos9
+              ? alimentoCarboidratos9.nome
               : "Nenhum alimento encontrado"}
             ,{" "}
-            {alimentoLegume1
-              ? alimentoLegume1.nome
+            {alimentoLegumes9
+              ? alimentoLegumes9.nome
               : "Nenhum alimento encontrado"}
           </Text>
         </View>
       </View>
     )
   }
-  const VerificaAlimentos = ()=>{
-  if (QuantAlimen === 0 ) {
-        return(
-          <View>
-            <Text>insira alimento</Text>
-          </View>
-        );
 
-  }else if(QuantAlimen >= 1){
-    return(
-      <ScrollCard/>
-);
+  const ButtonDisable = () => {
+    const QuantAlimen = Array(alimentos.length).length
+    const QuantCateg = Array(categorias.length).length
+    if (QuantAlimen <= 5) {
+      return (
+        <View style={styles.buttonContainer}>
+          <Pressable style={styles.botaodisabled} >
+            <Text style={styles.textBotao} disabled onPress={gerarSelecaoAleatoria}>Gerar nova seleção</Text>
+          </Pressable>
+          <Pressable style={styles.botaodisabled} disabled onPress={mostrarAlimentoAleatorio}>
+            <Text style={styles.textBotao}>Gerar seleção</Text>
+          </Pressable>
+        </View>
+      );
+    }else if(QuantAlimen >= 8){
+      return(
+        <View style={styles.buttonContainer}>
+          <Pressable style={styles.botao} >
+            <Text style={styles.textBotao} onPress={gerarSelecaoAleatoria}>Gerar nova seleção</Text>
+          </Pressable>
+
+        </View>
+      );
+    }
   }
-}
+  const QuantAlimen = Array(alimentos.length).length
+  const QuantCateg = Array(categorias.length).length
+
+
+  const VerificaAlimentos = () => {
+    if (QuantAlimen <= 8) {
+      return (
+        <View style={styles.ContainerAlert}>
+          <View style={[styles.AlertCard,]}>
+            <Text style={[styles.textWhite, styles.textBotao]}>Insira pelo menos 3 alimentos em cada categoria para gerar o cardápio</Text>
+          </View>
+        </View>
+      );
+
+    } else if (QuantAlimen <= 9) {
+      return (
+        <View >
+          <ScrollCard />
+        </View>
+      );
+    }
+  }
   return (
     <SafeAreaView style={[styles.container]}>
 
@@ -359,21 +462,13 @@ export default function index() {
           Cardápio Semanal
         </Text>
       </View>
-      
-      <ScrollView >
-        <VerificaAlimentos/>
-      </ScrollView>
 
-      <View style={styles.buttonContainer}>
-        <Pressable style={styles.botao} onPress={gerarSelecaoAleatoria}>
-          <Text style={styles.textBotao}>Gerar nova seleção</Text>
-        </Pressable>
-        <Pressable style={styles.botao} onPress={mostrarAlimentoAleatorio}>
-          <Text style={styles.textBotao}>Gerar seleção</Text>
-        </Pressable>
-        {/* <Button color={"#6ab7e2"} title="Gerar nova seleção" onPress={gerarSelecaoAleatoria} /> */}
-        {/* <Button color={"#6ab7e2"} title="Gerar" onPress={mostrarAlimentoAleatorio} /> */}
-      </View>
+      <ScrollView >
+        <VerificaAlimentos />
+      </ScrollView>
+      <ButtonDisable />
+
+
 
     </SafeAreaView>
   );
@@ -403,6 +498,7 @@ const styles = StyleSheet.create({
 
     // padding: 15
   },
+
   viewCard: {
     backgroundColor: "#297B4E",
     justifyContent: "center",
@@ -410,25 +506,47 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     minWidth: "100%",
     height: "auto",
-    marginVertical: 5,
+    marginVertical: 10,
 
   },
+  AlertCard: {
+    justifyContent: 'center',
+    alignItems: "center",
+    backgroundColor: "#297B4E",
+    height: 70,
+    width: 300,
+    borderRadius: 15
+  },
+  ContainerAlert: {
+    flexDirection: "column",
+    justifyContent: "space-between",
+    minHeight: '100%',
+    paddingBottom: 2
+  },
   container: {
-    // 
-    padding: 30,
+    padding: 15,
     flex: 1,
     alignItems: "center",
     backgroundColor: '#f7f7f8',
     margin: 0,
 
   },
-
+  botaodisabled: {
+    borderRadius: 15,
+    marginBottom: 0,
+    padding: 10,
+    elevation: 2,
+    backgroundColor: "#d2d2d2",
+  },
   botao: {
     borderRadius: 15,
-    marginTop: 30,
+    marginBottom: 0,
+    marginTop:5,
     padding: 10,
     elevation: 2,
     backgroundColor: "#297B4E",
+    width:"90%"
+    
   },
   textBotao: {
     color: "white",
@@ -440,8 +558,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     width: "100%",
     margin: 0,
+    alignItems: "center",
+    
   },
   text: {
     fontSize: 15,
+  },
+  textWhite: {
+    color: "#fff"
   },
 });
