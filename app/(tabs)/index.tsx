@@ -446,7 +446,7 @@ export default function index() {
         </View>
       );
 
-    } else if (QuantAlimen >= 8) {
+    } else if (QuantAlimen >= 9) {
       return (
         <View >
           <ScrollCard />
