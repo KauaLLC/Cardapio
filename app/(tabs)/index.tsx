@@ -180,7 +180,7 @@ export default function index() {
     setAlimentoProteínas5(selecionarAlimentoAleatorio("Proteínas"));
     setAlimentoCarboidratos5(selecionarAlimentoAleatorio("Carboidratos"));
     setAlimentoLegumes5(selecionarAlimentoAleatorio("Legumes"));
-  
+
     setAlimentoProteínas6(selecionarAlimentoAleatorio("Proteínas"));
     setAlimentoCarboidratos6(selecionarAlimentoAleatorio("Carboidratos"));
     setAlimentoLegumes6(selecionarAlimentoAleatorio("Legumes"));
@@ -371,7 +371,7 @@ export default function index() {
               : "Nenhum alimento encontrado"}
           </Text>
         </View>
-        <View style={[styles.viewCard]}>
+        <View style={[styles.viewCardsexta]}>
           <Text style={[styles.textBold, styles.textCard, styles.centerDay]}>Sexta</Text>
           <Text style={[styles.textCard, styles.textCenter]}>
             <Text style={styles.textBold}>Almoço: </Text>
@@ -420,8 +420,8 @@ export default function index() {
           </Pressable>
         </View>
       );
-    }else if(QuantAlimen >= 8){
-      return(
+    } else if (QuantAlimen >= 8) {
+      return (
         <View style={styles.buttonContainer}>
           <Pressable style={styles.botao} >
             <Text style={styles.textBotao} onPress={gerarSelecaoAleatoria}>Gerar nova seleção</Text>
@@ -445,7 +445,7 @@ export default function index() {
         </View>
       );
 
-    } else if (QuantAlimen <= 9) {
+    } else if (QuantAlimen >= 8) {
       return (
         <View >
           <ScrollCard />
@@ -462,7 +462,6 @@ export default function index() {
           Cardápio Semanal
         </Text>
       </View>
-
       <ScrollView >
         <VerificaAlimentos />
       </ScrollView>
@@ -498,7 +497,17 @@ const styles = StyleSheet.create({
 
     // padding: 15
   },
+  viewCardsexta: {
+    backgroundColor: "#297B4E",
+    justifyContent: "center",
+    padding: 20,
+    borderRadius: 10,
+    minWidth: "100%",
+    height: "auto",
+    marginVertical: 10,
+    marginBottom:30
 
+  },
   viewCard: {
     backgroundColor: "#297B4E",
     justifyContent: "center",
@@ -541,12 +550,12 @@ const styles = StyleSheet.create({
   botao: {
     borderRadius: 15,
     marginBottom: 0,
-    marginTop:5,
+    marginTop: 5,
     padding: 10,
     elevation: 2,
     backgroundColor: "#297B4E",
-    width:"90%"
-    
+    width: "90%"
+
   },
   textBotao: {
     color: "white",
@@ -559,7 +568,7 @@ const styles = StyleSheet.create({
     width: "100%",
     margin: 0,
     alignItems: "center",
-    
+
   },
   text: {
     fontSize: 15,
