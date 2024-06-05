@@ -416,9 +416,6 @@ export default function index() {
           <Pressable style={styles.botaodisabled} >
             <Text style={styles.textBotao} disabled onPress={gerarSelecaoAleatoria}>Gerar nova seleção</Text>
           </Pressable>
-          <Pressable style={styles.botaodisabled} disabled onPress={mostrarAlimentoAleatorio}>
-            <Text style={styles.textBotao}>Gerar seleção</Text>
-          </Pressable>
         </View>
       );
     }else if(QuantAlimen >= 9){
@@ -549,6 +546,7 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 2,
     backgroundColor: "#d2d2d2",
+    width:"90%"
   },
   botao: {
     borderRadius: 15,
