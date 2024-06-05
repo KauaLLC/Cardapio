@@ -14,6 +14,7 @@ import { useIsFocused } from "@react-navigation/native";
 
 
 
+
 const db = openDatabaseSync("mydb2.db");
 
 export default function index() {
@@ -371,7 +372,7 @@ export default function index() {
               : "Nenhum alimento encontrado"}
           </Text>
         </View>
-        <View style={[styles.viewCard]}>
+        <View style={[styles.viewCardsexta]}>
           <Text style={[styles.textBold, styles.textCard, styles.centerDay]}>Sexta</Text>
           <Text style={[styles.textCard, styles.textCenter]}>
             <Text style={styles.textBold}>Almoço: </Text>
@@ -409,7 +410,7 @@ export default function index() {
   const ButtonDisable = () => {
     const QuantAlimen = Array(alimentos.length).length
     const QuantCateg = Array(categorias.length).length
-    if (QuantAlimen <= 5) {
+    if (QuantAlimen <= 8) {
       return (
         <View style={styles.buttonContainer}>
           <Pressable style={styles.botaodisabled} >
@@ -445,7 +446,7 @@ export default function index() {
         </View>
       );
 
-    } else if (QuantAlimen <= 9) {
+    } else if (QuantAlimen >= 8) {
       return (
         <View >
           <ScrollCard />
@@ -497,6 +498,17 @@ const styles = StyleSheet.create({
     // textAlign:"center",
 
     // padding: 15
+  },
+  viewCardsexta: {
+    backgroundColor: "#297B4E",
+    justifyContent: "center",
+    padding: 20,
+    borderRadius: 10,
+    minWidth: "100%",
+    height: "auto",
+    marginVertical: 10,
+    marginBottom:30
+
   },
 
   viewCard: {
