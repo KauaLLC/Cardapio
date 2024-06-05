@@ -421,7 +421,7 @@ export default function index() {
           </Pressable>
         </View>
       );
-    }else if(QuantAlimen >= 8){
+    }else if(QuantAlimen >= 9){
       return(
         <View style={styles.buttonContainer}>
           <Pressable style={styles.botao} >
