@@ -463,7 +463,7 @@ export default function index() {
       <View style={{ justifyContent: "center", width: "90%", margin: 10, alignItems: "center", }}>
         <Text style={[styles.textTitulo]}>
           {/* Color scheme: {colorScheme} */}
-          Cardápio Semanal
+          Cardápio semanal
         </Text>
       </View>
 
