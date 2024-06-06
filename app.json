@@ -1,6 +1,5 @@
 {
   "expo": {
-    
     "name": "cardapio",
     "slug": "cardapio",
     "version": "1.0.0",
@@ -21,7 +20,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.kaualucaslima2.cardapio"
     },
     "web": {
       "bundler": "metro",
@@ -33,6 +33,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "1bbaed4d-6a47-4812-9936-730d7a502b62"
+      }
     }
   }
 }

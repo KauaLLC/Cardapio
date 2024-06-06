@@ -16,6 +16,12 @@ import { useIsFocused } from "@react-navigation/native";
 
 
 const db = openDatabaseSync("mydb2.db");
+db.execSync(
+  `CREATE TABLE IF NOT EXISTS alimento (nome TEXT PRIMARY KEY, categoria_id INTEGER NOT NULL, FOREIGN KEY (categoria_id) REFERENCES categoria(IdCategoria));`
+);
+db.execSync(
+  `CREATE TABLE IF NOT EXISTS categoria (IdCategoria INTEGER PRIMARY KEY AUTOINCREMENT, NomeCategoria TEXT NOT NULL);`
+); 
 
 export default function index() {
   useEffect(() => {
