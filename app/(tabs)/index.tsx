@@ -21,7 +21,7 @@ db.execSync(
 );
 db.execSync(
   `CREATE TABLE IF NOT EXISTS categoria (IdCategoria INTEGER PRIMARY KEY AUTOINCREMENT, NomeCategoria TEXT NOT NULL);`
-); 
+);
 
 export default function index() {
   useEffect(() => {
@@ -29,7 +29,7 @@ export default function index() {
     atualizarAlimentos();
   }, []);
 
-
+  const [countbutton, setCountbutton] = useState(0);
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [categoriaId, setCategoriaId] = useState<number>(0);
   const [alimentos, setAlimentos] = useState<Alimento[]>([]);
@@ -38,6 +38,7 @@ export default function index() {
   useEffect(() => {
     if (isFocused) {
       atualizarAlimentos();
+      atualizarCategorias();
     }
   }, [isFocused]);
 
@@ -45,6 +46,8 @@ export default function index() {
     atualizarCategorias();
     atualizarAlimentos();
   }, []);
+
+  // console.log("oi")
   const atualizarCategorias = () => {
     const allRows = db.getAllSync("SELECT * FROM categoria");
     const categoriasArray: Categoria[] = [];
@@ -187,7 +190,7 @@ export default function index() {
     setAlimentoProteínas5(selecionarAlimentoAleatorio("Proteínas"));
     setAlimentoCarboidratos5(selecionarAlimentoAleatorio("Carboidratos"));
     setAlimentoLegumes5(selecionarAlimentoAleatorio("Legumes"));
-  
+
     setAlimentoProteínas6(selecionarAlimentoAleatorio("Proteínas"));
     setAlimentoCarboidratos6(selecionarAlimentoAleatorio("Carboidratos"));
     setAlimentoLegumes6(selecionarAlimentoAleatorio("Legumes"));
@@ -204,6 +207,7 @@ export default function index() {
     setAlimentoCarboidratos9(selecionarAlimentoAleatorio("Carboidratos"));
     setAlimentoLegumes9(selecionarAlimentoAleatorio("Legumes"));
   }, []);
+
 
   const gerarSelecaoAleatoria = () => {
     setAlimentoProteínas(selecionarAlimentoAleatorio("Proteínas"));
@@ -245,8 +249,9 @@ export default function index() {
     setAlimentoProteínas9(selecionarAlimentoAleatorio("Proteínas"));
     setAlimentoCarboidratos9(selecionarAlimentoAleatorio("Carboidratos"));
     setAlimentoLegumes9(selecionarAlimentoAleatorio("Legumes"));
-  };
+    // setCountbutton(countbutton + 1)
 
+  };
   const ScrollCard = () => {
     return (
       <View style={{ width: "90%", marginHorizontal: 15, justifyContent: 'center', height: "auto", padding: 0 }}>
@@ -266,9 +271,6 @@ export default function index() {
             {alimentoLegumes
               ? alimentoLegumes.nome
               : "Nenhum alimento encontrado"}
-
-
-
           </Text>
           <Text style={[styles.textCard, styles.textCenter]}>
             <Text style={styles.textBold}>Janta: </Text>
@@ -412,10 +414,26 @@ export default function index() {
       </View>
     )
   }
+  // const Countbutton = () => {
+  //   if (countbutton === 0 ){
+  //     return(
+  //       <View style={styles.ContainerAlert}>
+  //       <View style={[styles.AlertCard,]}>
+  //         <Text style={[styles.textWhite, styles.textBotao]}>Todos os requisitos ok. Clique em gerar nova seleçao</Text>
+  //       </View>
+  //     </View>
+  //     )
+  //   }
+  //   else{
+      
 
+  //   }
+
+   
+  // };
+  
   const ButtonDisable = () => {
     const QuantAlimen = Array(alimentos.length).length
-    const QuantCateg = Array(categorias.length).length
     if (QuantAlimen <= 8) {
       return (
         <View style={styles.buttonContainer}>
@@ -424,9 +442,10 @@ export default function index() {
           </Pressable>
         </View>
       );
-    }else if(QuantAlimen >= 9){
-      return(
+    } else if (QuantAlimen >= 9) {
+      return (
         <View style={styles.buttonContainer}>
+
           <Pressable style={styles.botao} >
             <Text style={styles.textBotao} onPress={gerarSelecaoAleatoria}>Gerar nova seleção</Text>
           </Pressable>
@@ -444,7 +463,7 @@ export default function index() {
       return (
         <View style={styles.ContainerAlert}>
           <View style={[styles.AlertCard,]}>
-            <Text style={[styles.textWhite, styles.textBotao]}>Insira pelo menos 3 alimentos em cada categoria para gerar o cardápio</Text>
+            <Text style={[styles.textWhite, styles.textBotao]}>Insira pelo menos 3 alimentos em cada categoria para gerar o cardápio.</Text>
           </View>
         </View>
       );
@@ -460,7 +479,7 @@ export default function index() {
   return (
     <SafeAreaView style={[styles.container]}>
 
-      <View style={{ justifyContent: "center", width: "90%", margin: 10, alignItems: "center", }}>
+      <View style={styles.conainerTitle}>
         <Text style={[styles.textTitulo]}>
           {/* Color scheme: {colorScheme} */}
           Cardápio semanal
@@ -471,7 +490,7 @@ export default function index() {
         <VerificaAlimentos />
       </ScrollView>
       <ButtonDisable />
-
+      
 
 
     </SafeAreaView>
@@ -495,6 +514,13 @@ const styles = StyleSheet.create({
   textCenter: {
     textAlign: "center",
   },
+  conainerTitle: {
+    justifyContent: "center",
+    width: "90%",
+    margin: 10,
+    alignItems: "center",
+    marginTop: 20
+  },
   textCard: {
     color: '#F8F9FA',
     fontSize: 15,
@@ -510,7 +536,7 @@ const styles = StyleSheet.create({
     minWidth: "100%",
     height: "auto",
     marginVertical: 10,
-    marginBottom:30
+    marginBottom: 30
 
   },
 
@@ -552,17 +578,17 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 2,
     backgroundColor: "#d2d2d2",
-    width:"90%"
+    width: "90%"
   },
   botao: {
     borderRadius: 15,
     marginBottom: 0,
-    marginTop:5,
+    marginTop: 5,
     padding: 10,
     elevation: 2,
     backgroundColor: "#297B4E",
-    width:"90%"
-    
+    width: "90%"
+
   },
   textBotao: {
     color: "white",
@@ -575,7 +601,7 @@ const styles = StyleSheet.create({
     width: "100%",
     margin: 0,
     alignItems: "center",
-    
+
   },
   text: {
     fontSize: 15,

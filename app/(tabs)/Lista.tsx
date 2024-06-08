@@ -339,7 +339,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#09371D',
     marginBottom: 0,
-    textAlign:"center"
+    textAlign:"center",
+    marginTop:10
     
   },
   header: {
